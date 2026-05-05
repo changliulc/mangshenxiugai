@@ -1,0 +1,681 @@
+\chapter{基于单地磁传感器的车型分类方法}
+\label{ch:veh_cls}
+
+\section{引言}
+\label{sec:ch3_intro}
+
+基于第二章输出的车辆事件片段，本文进一步研究单地磁条件下的车型三分类问题。车型信息是道路交通运行评估、货车通行管理和道路资源配置的重要基础数据。然而，相较于视频和多传感器方案，单地磁节点只能观测车辆经过时的局部三轴磁场扰动，无法直接获得车长、总质量和外观尺寸等显式属性，因此不同类别车辆之间的可分性主要体现在扰动幅值、持续时间、轴向结构及其组合关系上。尤其在小型车、中型车和大型车三分类场景下，中型车往往同时与两侧类别存在一定重叠，使得单地磁条件下的稳定识别具有一定难度。
+
+与此同时，车辆通过速度的变化会使同类事件片段在时间轴上产生拉伸或压缩，局部峰谷和转折结构难以在原始时间索引上直接对应，从而增加了基于固定时间窗和固定位置特征的分类难度。从工程角度看，道路侧单地磁节点通常还受到算力、存储空间、供电方式和通信带宽等约束，不适宜长期上传原始高频波形。因此，本章采用端侧轻量部署与离线增强分析并行的研究思路：一方面构建基于统计特征与轻量分类器的端侧方案，以满足在线运行需求；另一方面构建基于动态时间规整与一维卷积网络的离线链路，用于评估时间对齐后时序结构信息的可利用程度，并分析性能提升的主要来源。需要说明的是，离线增强链路主要用于性能上限分析与机理验证，不作为常态端侧部署方案。
+
+本章其余内容安排如下：第3.2节介绍车型分类任务、数据构建与数据集划分方法；第3.3节给出基于统计特征的端侧轻量车型分类方法；第3.4节给出基于动态时间规整与一维卷积网络的离线增强分类方法；第3.5节对实验结果进行比较分析；最后在第3.6节对本章工作进行总结。
+
+\section{车型分类任务与数据构建}
+\label{sec:ch3_task_data}
+
+\subsection{数据构建与标注口径}
+\label{subsec:ch3_data_build}
+
+本章研究车型三分类任务，类别集合定义为
+\begin{equation}
+    \mathcal{Y}=\{\text{小型车},\text{中型车},\text{大型车}\}.
+\end{equation}
+为保证标签口径具有一致性与可复现性，并兼顾单地磁场景下视频人工核验的可操作性，本文将现场可辨识的细粒度车型进一步归并为三类标签用于模型训练与评测。需要说明的是，单地磁节点只能提供车辆通过时的三轴磁场扰动信息，无法直接获得车辆长度、总质量和乘坐人数等物理量，因此本章类别标签由现场视频人工核验后，按照本文定义的三分类映射口径完成归并。三类标签的判据边界与典型车辆类型如表~\ref{tab:ch3_label_rule} 所示。
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{三分类车辆类别体系与标注口径}
+\label{tab:ch3_label_rule}
+\renewcommand{\arraystretch}{1.25}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{2.0cm} p{10.8cm}}
+\hline
+类别 & 判据说明与典型车辆 \\
+\hline
+小型车 &
+（1）载客汽车：车长 $<6000$\,mm 且乘坐人数 $\le 19$；
+（2）载货汽车：车长 $<6000$\,mm 且总质量 $<4500$\,kg；
+典型车辆包括轿车、SUV、面包车、皮卡和轻型货车等。\\
+中型车 &
+（1）载客汽车：车长 $\ge 6000$\,mm 或乘坐人数 $\ge 20$；
+（2）载货汽车：车长 $\ge 6000$\,mm，或总质量 $\ge 4500$\,kg 且 $<12000$\,kg；
+典型车辆包括公交车、客车、中型货车以及部分专项作业车等。\\
+大型车 &
+载货汽车总质量 $\ge 12000$\,kg 的重型车辆及其常见组合形式；
+典型车辆包括重型货车、牵引车和半挂车等。\\
+\hline
+\end{tabular}
+\end{table}
+
+在标注过程中，本文采用视频核验、类别映射与事件对齐复查相结合的三级标注流程，并配套设置样本纳入准则。首先，根据现场视频对车辆外观、车身尺度及使用形态进行人工核验，得到细粒度车型标注；其次，按照表3.1给出的三分类口径完成标签映射；最后，结合第二章输出的事件边界与实测波形形态，对样本有效性进行复查。对于存在明显边界截断、双车重叠、邻近车辆强干扰或视频信息不足以可靠判别类别的样本，均不纳入训练与测试。通过上述流程，尽可能保证样本与单车事件一一对应，并降低标签噪声与边界误差对后续方法比较的干扰。
+
+\noindent\textbf{事件片段构建与预处理：}
+在明确类别体系与标注规则后，还需要将第\ref{ch:ch2_event_detect}章输出的车辆事件边界转换为分类模型可直接使用的统一样本表示。为此，本文进一步对事件片段的构建方式和预处理流程进行统一定义。设连续三轴地磁序列为
+\begin{equation}
+    \mathbf{B}(k)=\big[B_x(k),\,B_y(k),\,B_z(k)\big]^T,
+\end{equation}
+由第二章得到单车事件边界索引 $[k_{\mathrm{in}},\,k_{\mathrm{out}})$，则对应事件持续点数为
+\begin{equation}
+    N=k_{\mathrm{out}}-k_{\mathrm{in}}.
+\end{equation}
+为便于后续特征提取与模型训练，本文将事件片段重新编号为局部索引 $n$。其中，$1\le n\le N$。考虑到环境基线会随时间缓慢变化，本文以前导短窗口估计事件基线。本文在 $50\,\mathrm{Hz}$ 采样率下取 $N_{\mathrm{pre}}=25$，对应事件到达前 $0.5\,\mathrm{s}$ 的基线估计窗口。设该窗口长度为 $N_{\mathrm{pre}}$，则基线估计为
+\begin{equation}
+    \mathbf{B}_0=\frac{1}{N_{\mathrm{pre}}}\sum_{k=k_{\mathrm{in}}-N_{\mathrm{pre}}}^{k_{\mathrm{in}}-1}\mathbf{B}(k).
+\end{equation}
+在此基础上，定义基线扣除后的三轴扰动序列为
+\begin{equation}
+    \Delta\mathbf{B}(n)=\mathbf{B}(k_{\mathrm{in}}+n-1)-\mathbf{B}_0,\qquad n=1,2,\ldots,N.
+\end{equation}
+为进一步刻画车辆扰动的综合强度，定义模值序列
+\begin{equation}
+    b(n)=\left\|\Delta\mathbf{B}(n)\right\|_2
+    =\sqrt{\Delta B_x(n)^2+\Delta B_y(n)^2+\Delta B_z(n)^2}.
+\end{equation}
+后续端侧统计特征方法与离线深度模型均以 $\Delta\mathbf{B}(n)$ 及其模值序列 $b(n)$ 作为统一输入表示。
+
+\subsection{数据集统计与划分}
+\label{subsec:ch3_split_term}
+
+本文实测车辆事件数据集共包含 1366 条单车事件片段，类别与事件长度统计如表~\ref{tab:ch3_dataset_overview} 所示。由于不同车辆在不同速度条件下通过传感器时，事件持续长度存在明显波动，因此端侧轻量方法直接在变长事件片段上提取统计特征，而离线卷积网络则需将事件映射为定长输入。关于定长映射方式与长度设置，将在第\ref{sec:ch3_offline}节中进一步说明。
+
+在离线链路中，统一长度 $L_{\mathrm{uni}}$ 的选择需要在信息保留与输入维度之间取得平衡。长度过短会导致高速度样本被过度压缩，使局部峰谷结构丢失；长度过长则会引入大量插值冗余并增加卷积网络计算量。本文结合训练集事件长度分布与验证集性能，在覆盖绝大多数样本并保持模型规模可控的前提下，取 $L_{\mathrm{uni}}=176$ 作为统一长度。对于长度远大于 $L_{\mathrm{uni}}$ 的少数长事件，线性重采样相当于在时间轴上进行下采样；对于长度显著小于 $L_{\mathrm{uni}}$ 的短事件，则相当于对关键结构进行插值展开。由于后续还将引入 DTW 非线性对齐以缓解局部结构错位，因此该统一长度设置能够满足离线对照实验的需求。
+
+此外，实测数据中不同类别的样本规模存在一定差异，其中中型车通常处于样本数相对较少且类间边界较为模糊的位置，更容易成为误差集中来源。已有研究指出，基于单磁传感器的车型分类在类别不均衡条件下更容易出现训练偏置与评价失衡\cite{ch3_xu2018imbalanced}。为在评价中兼顾各类别贡献，本文除总体准确率外，进一步采用宏平均 $F_1$ 作为主要指标，并在训练阶段仅对训练集执行随机过采样以缓解类别不均衡带来的优化偏置。
+
+为保证不同方法之间的对照公平性，本文对数据集按类别进行分层随机划分，其中训练集占 70\%，验证集占 15\%，测试集占 15\%，并固定随机种子为 42。同时，将该划分索引固定导出并供所有方法复用，使端侧轻量基线、离线卷积网络基线以及 DTW 增强方法共享同一组训练集、验证集和测试集。所有超参数均仅依赖验证集选择，测试集仅用于最终一次性能报告。
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{实测车辆事件数据集统计与划分}
+\label{tab:ch3_dataset_overview}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+
+\begin{tabular}{c c c c c}
+\hline
+\multicolumn{5}{l}{（A）数据集统计与事件长度分布（采样点数）} \\
+\hline
+类别 & 样本数 & 最短长度 & 中位长度 & 最长长度 \\
+\hline
+\input{../tables/ch3_dataset_stats_rows.tex}\\
+\hline
+\end{tabular}
+
+\vspace{2mm}
+
+\begin{tabular}{c c c c}
+\hline
+\multicolumn{4}{l}{（B）分层随机划分后的各类样本数} \\
+\hline
+划分 & 小型车 & 中型车 & 大型车 \\
+\hline
+\input{../tables/ch3_dataset_split_rows.tex}\\
+\hline
+\end{tabular}
+\end{table}
+
+图~\ref{fig:ch3_waveform_by_class} 给出了三类车辆事件的典型模值波形示例。可以看出，不同类别车辆在扰动幅值、持续长度和整体形态上均存在差异，但类内样本又会受到车速变化、通过位置和环境条件等因素影响，因此仅依赖单一峰值或单一时长进行判别往往难以获得稳定结果。这也是后续分别引入统计特征方法和时间对齐方法的原因。
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.78\linewidth]{../images/ch3_waveform_by_class.png}
+    \caption{三类车辆事件的典型模值波形示例}
+    \label{fig:ch3_waveform_by_class}
+\end{figure}
+
+进一步地，图~\ref{fig:ch3_stat_boxplots} 从事件持续时间和模值能量两个维度给出了三类车辆样本的统计分布。可以看出，小型车、中型车和大型车在事件持续时间与模值能量上均呈现整体层级差异，其中大型车总体持续时间更长、模值能量更高；但三类分布之间仍存在一定重叠，尤其是中型车与两侧类别之间的过渡区域较为明显。这说明长度和能量等统计量具有明确的分类价值，但尚不足以单独完成稳定识别，后续仍需结合多轴结构信息和时间对齐方法进一步提升鲁棒性。
+
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{../images/ch3_event_length_boxplot.png}
+  \caption{三类车辆事件持续时间分布箱线图}
+  \label{fig:ch3_event_length_boxplot}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{../images/ch3_mag_energy_boxplot.png}
+  \caption{三类车辆模值能量分布箱线图（对数坐标）}
+  \label{fig:ch3_mag_energy_boxplot}
+\end{subfigure}
+\caption{三类车辆事件在持续时间与模值能量上的统计分布}
+\label{fig:ch3_stat_boxplots}
+\end{figure}
+
+\FloatBarrier
+
+
+\section{基于统计特征的端侧轻量车型分类方法}
+\label{sec:ch3_edge}
+
+考虑到道路侧单地磁节点通常受限于算力、功耗和通信带宽，端侧车型分类方法应尽量避免复杂时序对齐和高维网络推理，而采用计算量较低、易于实现的统计特征与轻量分类器完成判别。基于这一考虑，本文构建了端侧轻量车型分类基线，其总体流程如图~\ref{fig:ch3_baseline_flow} 所示。
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.80\linewidth]{../images/ch3_baseline_flow.png}
+\caption{端侧轻量车型分类基线流程}
+\label{fig:ch3_baseline_flow}
+\end{figure}
+
+\subsection{特征提取与筛选}
+\label{subsec:ch3_edge_feat}
+
+端侧方法的设计目标，不是在有限资源下穷尽全部时序细节，而是在尽量低的计算开销下保留足以区分类别的代表性信息。鉴于单地磁节点无法直接观测车辆长度、总质量等显式属性，本文从事件片段的三轴扰动序列 $\Delta B_x(n)$、$\Delta B_y(n)$、$\Delta B_z(n)$ 及模值序列 $b(n)$ 出发，围绕幅值、能量、面积、时序和形态五类信息构造候选统计特征。其中，特征设计遵循两项原则：其一，尽量采用可由一次遍历在线计算得到的统计量，以适应端侧实时处理约束；其二，尽量覆盖不同轴向和不同结构层面的波形差异，以降低单一指标受车速、车辆横向位置和局部扰动影响而失效的风险。表3.3给出了正文保留的代表性特征，表3.4给出了候选特征类别与典型示例。
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{端侧代表性特征定义}
+\label{tab:ch3_edge_feat_defs}
+\begin{tabular}{p{3.8cm} p{8.4cm}}
+\hline
+特征名称/符号 & 定义 \\
+\hline
+模值峰值 $b_{\max}$ & $b_{\max}=\max_{1\le n\le N} b(n)$ \\
+模值能量 $E_b$ & $E_b=\sum_{n=1}^{N} b(n)^2$ \\
+$x$ 轴绝对面积 $A_x$ & $A_x=\sum_{n=1}^{N} |\Delta B_x(n)|$ \\
+$z$ 轴绝对面积 $A_z$ & $A_z=\sum_{n=1}^{N} |\Delta B_z(n)|$ \\
+事件持续时间 $T_{\mathrm{evt}}$ & $T_{\mathrm{evt}}=N/f_s$，其中采样率 $f_s=50\,\mathrm{Hz}$ \\
+\hline
+\end{tabular}
+\end{table}
+
+表~\ref{tab:ch3_feat_pool}进一步给出了候选统计特征集合的类别划分及典型示例。除表~\ref{tab:ch3_edge_feat_defs}中的代表性特征外，候选集合还包括峰峰值、均方根、偏度与峰度等描述波形形态与分布的统计量，以及上升沿、下降沿持续时间等描述时序结构的量。候选特征的构造遵循两项原则：其一，尽量使用一次遍历即可在线计算的统计量，避免引入复杂的时序对齐或频域变换；其二，尽量覆盖“幅值—能量—面积—时序—形态”多维信息，以降低单一指标受工况波动影响而失效的风险。
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{候选统计特征类别与典型示例}
+\label{tab:ch3_feat_pool}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{2.6cm} p{4.8cm} p{6.0cm}}
+\hline
+类别 & 典型特征（示例） & 说明 \\
+\hline
+幅值与幅宽类 & $b_{\max}$，$b_{\mathrm{p2p}}$，$\max|\Delta B_x|$ & 描述扰动幅值尺度及峰谷跨度 \\
+能量类 & $E_b$，$b_{\mathrm{rms}}$ & 描述扰动强度在时间上的累积 \\
+面积类 & $A_x$，$A_z$，$\sum |\Delta B_y|$ & 描述各轴扰动贡献与持续影响 \\
+时序类 & $T$，$t_{\mathrm{rise}}$，$t_{\mathrm{fall}}$ & 描述持续时间与关键结构相对位置 \\
+形态类 & 偏度、峰度、峰谷数等 & 描述波形分布形态及局部结构复杂度 \\
+\hline
+\end{tabular}
+\end{table}
+
+为提高不同特征在训练中的可比性，本文在分类器训练前对选取的特征向量执行 z-score 标准化。设第 $j$ 维特征在训练集上的均值与标准差分别为 $\mu_j$ 与 $\sigma_j$，则标准化特征定义为
+\begin{equation}
+    \hat f_j = \frac{f_j-\mu_j}{\sigma_j+\epsilon},
+\end{equation}
+其中 $\epsilon$ 为避免除零的极小常数。标准化参数仅由训练集估计，并固定用于验证集与测试集。
+
+首先在训练集上利用随机森林对候选统计特征进行重要性排序，相关做法可参考文献\cite{ch3_zhang2019featureselection}。图~\ref{fig:ch3_feat_importance} 给出了候选特征的重要性结果，其中橙色条形表示最终保留的端侧特征。可以看出，$x$ 轴绝对面积、事件持续时间以及模值能量等特征具有较高的重要性，这说明车辆持续时间、整体扰动强度及主导轴向的面积贡献对车型分类均具有较强判别价值。
+
+特征筛选按照“重要性排序—相关去冗余—验证集选维”的三段流程进行。首先，利用随机森林给出候选特征的单维重要性排序，图3.4的作用是为后续筛选提供初始参考，而不直接决定最终特征子集；其次，计算候选特征两两之间的 Pearson 相关系数，并以 $|\rho_{ij}|\ge 0.90$ 为阈值进行贪心去冗余，以避免信息重复带来的过拟合和推理冗余；最后，将特征维度 $K$ 视为需要选择的超参数，在验证集上对不同 Top-$K$ 子集进行比较，并以宏平均 $F_1$ 作为主指标进行选择。当不同 $K$ 的性能接近时，优先取更小的维度，以兼顾分类性能与端侧开销。按此流程，本文最终取 $K^\ast=5$，并得到表3.5所示的端侧特征子集。
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.80\linewidth]{../images/ch3_feature_importance_authoritative.png}
+\caption{端侧候选统计特征重要性排序（随机森林）}
+\label{fig:ch3_feat_importance}
+\end{figure}
+
+随后，本文计算候选特征两两间的 Pearson 相关系数。对任意两维特征向量 $\mathbf{f}_i$ 与 $\mathbf{f}_j$，其相关系数定义为
+\begin{equation}
+    \rho_{ij}=\frac{\sum_{n}(f_i(n)-\bar f_i)(f_j(n)-\bar f_j)}{\sqrt{\sum_{n}(f_i(n)-\bar f_i)^2}\,\sqrt{\sum_{n}(f_j(n)-\bar f_j)^2}},
+\end{equation}
+其中 $\bar f_i$ 与 $\bar f_j$ 分别为训练集上的均值。本文以 $|\rho_{ij}|\ge 0.90$ 作为阈值进行贪心去冗余，避免信息重复导致的过拟合。考虑到端侧部署需要同时兼顾特征提取开销和分类稳定性，本文将部署候选特征维度限定为 $K\in\{5,6,7\}$，并在验证集上比较相应 Top-$K$ 特征子集的宏平均 $F_1$。图~\ref{fig:ch3_ablation_edge_k} 表明，在该部署候选集中，$K=5$ 时验证集性能最高，而继续增加到 6 维或 7 维并未带来稳定增益，因此本文在部署口径下取 $K^\ast=5$ 作为端侧特征维度。对应的代表性特征子集如表~\ref{tab:ch3_edge_selected_feat} 所示。需要说明的是，为了观察轻量统计特征链路在有限增维条件下的性能上界，后续总体性能比较部分还将单独给出扩展搜索下的端侧最优结果，但这并不改变部署口径中对 $K=5$ 的选择。
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.72\linewidth]{../images/ablation_edge_K.png}
+\caption{端侧特征维度 $K$ 的选择结果（验证集宏平均 $F_1$）}
+\label{fig:ch3_ablation_edge_k}
+\end{figure}
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{端侧最终选取的 Top-$K$ 特征（$K=5$）}
+\label{tab:ch3_edge_selected_feat}
+\begin{tabular}{c p{4.8cm} p{6.0cm}}
+\hline
+序号 & 特征名/符号 & 物理含义与解释 \\
+\hline
+1 & $A_x$（X 轴绝对面积） & 反映 X 向整体扰动强度及其累积贡献 \\
+2 & $E_b$（模值能量） & 反映三轴合成扰动的总体能量水平 \\
+3 & $z_{\max}$（Z 轴峰值） & 表征垂向主导峰值强度与车辆相对姿态差异 \\
+4 & $x_{\max}$（X 轴峰值） & 补充行进方向上的局部峰值结构信息 \\
+5 & $N_{zc}^{(z)}$（Z 轴过零次数） & 刻画波形结构复杂度与局部变化频度 \\
+\hline
+\end{tabular}
+\end{table}
+
+从物理意义看，$A_x$ 与 $E_b$ 主要刻画整体扰动强度及其累积效应，$z_{\max}$ 和 $x_{\max}$ 则补充不同主导轴向上的峰值结构信息，$N_{zc}^{(z)}$ 进一步表征波形复杂度与局部变化频度。该特征组合并不追求将车长、车速和横向位置等因素完全解耦，而是在较低计算开销下，用少量统计量共同描述车辆体量、结构和通过姿态对地磁波形的综合影响，从而保留足够的类别差异。
+
+
+\subsection{轻量分类器设计}
+\label{subsec:ch3_edge_cls}
+
+在完成特征筛选后，本文在同一组 Top-$K$ 特征子集上比较 Softmax 回归、线性支持向量机和决策树三类轻量分类器。本文将 Softmax 回归作为端侧主方法，主要基于以下考虑：其一，该模型能够直接输出三类后验概率，便于后续置信度分析与阈值管理；其二，参数规模随特征维度线性增长，训练与推理链路相对清晰，适合在资源受限节点上实现稳定部署；其三，在低维统计特征输入条件下，Softmax 回归能够较好保持线性可解释性，便于分析不同特征对分类结果的贡献。相比之下，线性支持向量机主要用于检验所选特征在传统判别模型下的可分性，决策树主要用于观察基于规则的划分路径，因此二者在本章中承担对照分析角色，而不作为常态端侧部署方案。
+
+对于 Softmax 分类器，设标准化后的输入特征向量为 $\tilde{\boldsymbol{\phi}}$，第 $c$ 类的线性响应为
+\begin{equation}
+    z_c=\mathbf{w}_c^T\tilde{\boldsymbol{\phi}}+b_c,\qquad c\in\{1,2,3\},
+\end{equation}
+则对应的类别后验概率为
+\begin{equation}
+    p(y=c\mid \tilde{\boldsymbol{\phi}})=\frac{\exp(z_c)}{\sum_{j=1}^{3}\exp(z_j)}.
+\end{equation}
+模型输出类别记为
+\begin{equation}
+    \hat{y}=\arg\max_{c} p(y=c\mid \tilde{\boldsymbol{\phi}}).
+\end{equation}
+训练过程中采用交叉熵损失函数
+\begin{equation}
+    \mathcal{L}_{\mathrm{CE}}=-\sum_{c=1}^{3} y_c\log p(y=c\mid \tilde{\boldsymbol{\phi}}),
+\end{equation}
+其中 $y_c$ 表示真实标签的独热编码。
+
+为增强模型的泛化能力，本文在交叉熵损失基础上加入 $\ell_2$ 正则项，得到
+\begin{equation}
+    \mathcal{L}=\mathcal{L}_{\mathrm{CE}}+\lambda\left\|\mathbf{W}\right\|_F^2,
+\end{equation}
+其中 $\mathbf{W}=[\mathbf{w}_1,\mathbf{w}_2,\mathbf{w}_3]\in\mathbb{R}^{K\times 3}$，$\lambda$ 为正则化系数。$\lambda$ 由验证集宏平均 $F_1$ 选择，并在指标接近时优先取较大的正则强度以抑制过拟合。
+
+对于线性支持向量机，本文采用一对多方式扩展到三分类。记第 $n$ 个训练样本的特征向量为 $\tilde{\boldsymbol{\phi}}^{(n)}$，其标签为 $y^{(n)}\in\{1,2,3\}$。对任一类别，其对应的二分类子问题可写为
+\begin{equation}
+\min_{\mathbf{w},b,\boldsymbol{\xi}}\;\frac{1}{2}\left\|\mathbf{w}\right\|_2^2+C\sum_{n}\xi_n
+\quad
+\text{s.t.}\quad
+y_n(\mathbf{w}^T\tilde{\boldsymbol{\phi}}^{(n)}+b)\ge 1-\xi_n,\ \xi_n\ge 0,
+\end{equation}
+其中 $C$ 为惩罚系数。该对照用于检验所选特征在最大间隔判别准则下的可分性。
+
+对于决策树分类器，本文采用基于基尼指数的划分准则。设节点处三类样本比例为 $\{p_1,p_2,p_3\}$，则基尼指数定义为
+\begin{equation}
+    G=1-\sum_{c=1}^{3}p_c^2.
+\end{equation}
+决策树模型有助于从规则层面对误判样本的特征分裂路径进行解释，但其泛化能力与树深度等参数高度相关，因此同样需要在验证集上进行约束选择。
+
+表~\ref{tab:ch3_edge_hyper} 汇总了三类轻量分类器的主要超参数及其搜索范围。所有超参数均仅利用训练集与验证集确定，测试集仅用于最终一次性能报告，以避免评测偏置。
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{端侧轻量分类器超参数设置与搜索范围}
+\label{tab:ch3_edge_hyper}
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{3.1cm} p{7.2cm} p{2.8cm}}
+\hline
+模型 & 主要超参数与范围 & 选择指标 \\
+\hline
+Softmax 分类器 & 正则系数 $\lambda\in\{10^{-4},10^{-3},10^{-2},10^{-1}\}$ & 验证集宏平均 $F_1$ \\
+线性 SVM & 惩罚系数 $C\in\{0.1,1,10,100\}$ & 验证集宏平均 $F_1$ \\
+决策树 & 最大深度 $\in\{3,4,5,6,7\}$，最小叶样本数 $\in\{1,2,4\}$ & 验证集宏平均 $F_1$ \\
+\hline
+\end{tabular}
+\end{table}
+
+考虑到数据集中不同类别的样本数存在差异，本文仅在训练阶段对少数类进行随机过采样，以缓解类别偏置；验证集和测试集均保持原始分布不变，以避免评价结果受到重采样策略影响。从计算复杂度看，统计特征的提取主要对应事件片段的一次线性遍历，其复杂度为 $\mathcal{O}(N)$；Softmax 分类器推理复杂度为 $\mathcal{O}(K\cdot C)$，其中 $C=3$ 为类别数。由于本文最终仅保留 $K=5$ 个特征，因此该方案能够满足道路侧节点低开销实时推理的要求。后文实验中，本文将以 Softmax 分类器作为端侧部署基线，并将支持向量机和决策树作为传统对照模型。
+
+
+从端侧部署角度进一步考察，该基线方案仅需在单车事件结束后计算少量统计量，并可根据系统架构在端侧直接输出类别标签或类别概率。若将事件波形直接上传至中心端用于分类，假设每轴采样采用 16 bit 定点量化，则单事件需传输约 $3N\times 2$ 字节的原始数据；作为保守估计，即使需要上报统计特征或中间结果，也仅需传输 $K$ 个浮点数及少量元数据，通信开销可近似表示为 $4K+\mathcal{O}(1)$ 字节。以典型事件长度 $N\approx 200$、特征维度 $K=5$ 为例，此类上报相对于原始波形上报的带宽需求仍可降低一个数量级以上，从而更适合低功耗广域通信场景。
+
+需要说明的是，端侧轻量方案的目标并非追求离线最高精度，而是在资源约束下提供可用的在线分类能力；离线增强链路则用于评估时序结构信息在充分计算资源条件下的可挖掘程度，并为端侧方案的改进方向提供依据。
+
+\section{基于动态时间规整与一维卷积网络的离线增强分类方法}
+\label{sec:ch3_offline}
+
+\subsection{车速变化与离线卷积网络基线}
+\label{subsec:ch3_offline_base}
+
+尽管端侧统计特征方法能够满足低开销部署需求，但其主要依赖事件级统计量，对局部时序结构的利用仍然有限。对于单地磁波形而言，同类车辆在不同通过速度下往往会表现出明显的时间伸缩现象：事件整体持续时间发生变化的同时，局部峰谷和转折点在时间轴上的相对位置也会产生错位。因此，若仅依赖固定时间索引下的逐点比较或线性拉伸后的统一表示，同类样本之间的结构对应关系仍可能被削弱，进而影响分类稳定性。
+
+基于上述考虑，本文在离线链路中首先构建线性定长归一化的一维卷积网络基线，并进一步在其前端引入动态时间规整，以评估时间对齐后波形结构信息的可利用程度。需要说明的是，本节方法定位为离线增强与机理验证：线性定长卷积网络用于提供不引入时间对齐时的基础对照，DTW 增强方法用于分析车速变化条件下的潜在性能上限，而不直接作为端侧在线部署方案。
+
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}[t]{0.49\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{../images/fig_motivation_speed.png}
+  \caption{车速变化引起的时间伸缩}
+  \label{fig:ch3_speed_stretch}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.49\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{../images/fig_motivation_dtw_align_z.png}
+  \caption{DTW 对齐后的结构对应}
+  \label{fig:ch3_dtw_align_demo}
+\end{subfigure}
+\caption{车速变化与 DTW 对齐示意}
+\label{fig:ch3_motivation_pair}
+\end{figure}
+
+作为离线链路的基础对照，本文首先采用线性定长归一化的一维卷积网络基线。设四通道输入序列为
+\begin{equation}
+    \mathbf{x}(n)=\big[\Delta B_x(n),\,\Delta B_y(n),\,\Delta B_z(n),\,b(n)\big]^T,\qquad n=1,2,\ldots,N,
+\end{equation}
+则通过线性插值将变长事件片段映射为长度为 $L_{\mathrm{uni}}$ 的定长序列，记映射结果为
+\begin{equation}
+    \mathbf{X}\in\mathbb{R}^{4\times L_{\mathrm{uni}}}.
+\end{equation}
+在该映射中，令归一化时间索引为 $\ell=1,2,\ldots,L_{\mathrm{uni}}$，对应原始片段的连续索引为
+\begin{equation}
+    r(\ell)=1+\frac{\ell-1}{L_{\mathrm{uni}}-1}(N-1),
+\end{equation}
+并记 $\alpha(\ell)=r(\ell)-\lfloor r(\ell)\rfloor$，则线性插值可写为
+\begin{equation}
+    X_{i,\ell}=(1-\alpha(\ell))\,x_i(\lfloor r(\ell)\rfloor)+\alpha(\ell)\,x_i(\lceil r(\ell)\rceil),
+\end{equation}
+其中 $x_i(\cdot)$ 表示第 $i$ 个通道的原始序列。该过程等价于对时间轴施加全局线性伸缩，能够在一定程度上消除不同速度导致的整体时长差异，但无法处理局部非线性错位，因此需要进一步引入动态时间规整进行补偿。
+该过程仅对时间轴进行线性归一化，不引入动态时间规整。为减弱不同通道量纲和幅值范围差异对网络训练的影响，本文对四通道序列进行按通道的 z-score 标准化。设第 $i$ 个通道在训练集上的均值和标准差分别为 $\mu_i$ 和 $\sigma_i$，则归一化后的输入为
+\begin{equation}
+    \tilde{X}_{i,\ell}=\frac{X_{i,\ell}-\mu_i}{\sigma_i},\qquad i=1,2,3,4,\;\ell=1,2,\ldots,L_{\mathrm{uni}}.
+\end{equation}
+标准化参数仅由训练集估计，并固定用于验证集和测试集。
+
+网络结构采用轻量一维卷积网络作为统一分类骨干。该网络通过多层一维卷积和池化在局部感受野内提取扰动波形的形态特征，并通过全局平均池化将时序表征压缩为定长向量，最后经全连接层输出三分类概率。为抑制过拟合，在全连接层前加入 Dropout。离线基线与后续 DTW 增强方法共用同一卷积网络结构，其配置见表~\ref{tab:ch3_cnn_arch}。
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{一维卷积网络结构配置}
+\label{tab:ch3_cnn_arch}
+\begin{tabular}{c c c c c}
+\hline
+层级 & 输出长度 & 通道数 & 卷积核/池化核 & 步长 \\
+\hline
+Input & $L_{\mathrm{uni}}$ & $C_{\mathrm{in}}$ & -- & -- \\
+Conv-1 & $L_{\mathrm{uni}}$ & 32  & 7 & 1 \\
+MaxPool-1 & $L_{\mathrm{uni}}/2$ & 32 & 2 & 2 \\
+Conv-2 & $L_{\mathrm{uni}}/2$ & 64  & 5 & 1 \\
+MaxPool-2 & $L_{\mathrm{uni}}/4$ & 64 & 2 & 2 \\
+Conv-3 & $L_{\mathrm{uni}}/4$ & 128 & 3 & 1 \\
+GAP & 1 & 128 & -- & -- \\
+Dropout & 1 & 128 & $p=0.2$ & -- \\
+FC & -- & 3 & -- & -- \\
+\hline
+\end{tabular}
+\end{table}
+
+卷积层的计算可以表示为
+\begin{equation}
+    h^{(l)}_{c}(\ell)=\sigma\!\left(\sum_{c'}\sum_{\tau=0}^{k_l-1} w^{(l)}_{c,c',\tau}\,h^{(l-1)}_{c'}(\ell-\tau)+b^{(l)}_{c}\right),
+\end{equation}
+其中 $h^{(0)}=\tilde{\mathbf{X}}$，$k_l$ 为第 $l$ 层卷积核长度，$\sigma(\cdot)$ 为非线性激活函数。通过逐层堆叠卷积与池化操作，网络感受野逐步扩大，从而能够同时建模局部峰谷形态与较长时间跨度上的扰动趋势。按照表~\ref{tab:ch3_cnn_arch} 的配置，卷积网络参数量约为 $3.6\times 10^{4}$，属于较轻量的时序模型，便于在离线侧开展多组对照实验与消融分析。
+
+其中，$C_{\mathrm{in}}$ 表示输入通道数。对于线性定长卷积网络基线和单模板 DTW 增强方法，输入通道数均为 4；对于多模板 DTW 增强方法，输入通道数随模板数量增加而增加。设网络输出的类别概率向量为 $\hat{\mathbf{y}}=f_{\theta}(\tilde{\mathbf{X}})$，则训练阶段同样采用交叉熵损失函数
+\begin{equation}
+    \mathcal{L}_{\mathrm{CE}}=-\sum_{c=1}^{3} y_c \log \hat{y}_c,
+\end{equation}
+其中 $\theta$ 表示网络参数。这一离线基线主要用于与后续时间对齐方法进行比较，从而评估非线性对齐对车型分类的实际增益。
+
+\subsection{基于动态时间规整的对齐增强方法}
+\label{subsec:ch3_dtw_def}
+
+动态时间规整用于在允许局部时间伸缩的条件下，对两段时间序列进行非线性配准\cite{ch3_sakoe1978dtw}。设两条长度分别为 $N$ 和 $M$ 的四通道序列为 $\mathbf{p}=\{\mathbf{p}_1,\ldots,\mathbf{p}_N\}$ 和 $\mathbf{q}=\{\mathbf{q}_1,\ldots,\mathbf{q}_M\}$，则局部距离定义为
+\begin{equation}
+    d(i,j)=\left\|\mathbf{p}_i-\mathbf{q}_j\right\|_2^2.
+\end{equation}
+本文采用带步进惩罚项的动态规划递推形式
+\begin{equation}
+    D(i,j)=d(i,j)+\min\big\{D(i-1,j-1),\,D(i-1,j)+\lambda,\,D(i,j-1)+\lambda\big\},
+\end{equation}
+其中 $\lambda$ 为步进惩罚项，用于抑制过多的水平或垂直移动。为降低计算量并限制不合理的大范围配准，本文采用 Sakoe--Chiba 窗口约束，将搜索范围限制在主对角线附近的带状区域内。若统一长度为 $L_{\mathrm{uni}}$，相对窗口比例为 $w_R$，则窗口半径取
+\begin{equation}
+    w=\lfloor w_R L_{\mathrm{uni}} \rfloor.
+\end{equation}
+通过回溯动态规划矩阵可得到最优对齐路径，并据此将输入序列映射到参考时间轴。
+
+令最优对齐路径为
+\begin{equation}
+    \pi=\{(i_1,j_1),(i_2,j_2),\ldots,(i_{L_\pi},j_{L_\pi})\},
+\end{equation}
+其中 $L_\pi$ 为路径长度。最优路径需满足边界约束 $(i_1,j_1)=(1,1)$、$(i_{L_\pi},j_{L_\pi})=(N,M)$，并满足单调性与连续性约束，即 $i_{l+1}\ge i_l$、$j_{l+1}\ge j_l$，且步进 $\big(i_{l+1}-i_l,\;j_{l+1}-j_l\big)$ 只能取 $(1,0)$、$(0,1)$ 或 $(1,1)$。在得到对齐路径后，可将输入序列按参考时间轴进行重采样。例如，以序列 $\mathbf{q}$ 为参考轴，对齐后的序列可按
+\begin{equation}
+    \mathbf{p}'_{j}=\frac{1}{|\mathcal{I}(j)|}\sum_{i\in\mathcal{I}(j)}\mathbf{p}_{i},
+\end{equation}
+构造，其中 $\mathcal{I}(j)=\{i\,|\,(i,j)\in\pi\}$ 表示与参考索引 $j$ 对齐的输入索引集合。该映射能够在允许局部时间伸缩的条件下恢复关键结构之间的对应关系。
+
+从计算复杂度看，标准 DTW 的时间复杂度为 $\mathcal{O}(NM)$。在本章离线链路中，输入序列均已统一到长度 $L_{\mathrm{uni}}$，并采用 Sakoe--Chiba 窗口将搜索范围限制为带宽约为 $2w+1$ 的带状区域，因此单次对齐的复杂度可近似为 $\mathcal{O}(L_{\mathrm{uni}}\cdot w)$。该复杂度仍显著高于端侧统计特征方案，但在离线评测场景下可接受。
+
+在此基础上，本文首先构建单模板对齐增强方法。设第 $c$ 类样本集合为 $\mathcal{S}_c$，其参考模板记为 $\mathbf{X}_{\mathrm{ref}}^{(c)}\in\mathbb{R}^{4\times L_{\mathrm{uni}}}$。模板构造方式包括两种：一种是将同类训练样本线性归一化后逐点求平均得到的均值模板；另一种是采用 DTW Barycenter Averaging 迭代更新得到的 DBA 模板\cite{ch3_petitjean2011dba}，其目标可写为
+\begin{equation}
+    \mathbf{X}_{\mathrm{DBA}}^{(c)}=\arg\min_{\mathbf{R}}\sum_{\mathbf{X}\in\mathcal{S}_c}\mathrm{DTW}(\mathbf{R},\mathbf{X}).
+\end{equation}
+DBA 模板通常通过迭代方式求解。具体而言，首先以线性定长归一化后的均值模板作为初始化；随后在每次迭代中，对类内每个训练样本与当前模板计算 DTW 对齐路径，并将样本点按对齐关系分配到模板的各个时间位置；最后在每个位置上对被分配的样本点求平均，从而更新模板。重复迭代直至达到预设迭代次数或模板变化收敛。该过程能够显式考虑非线性对齐关系，从而缓解直接逐点平均导致的局部错位问题。
+
+对于任一样本 $\mathbf{X}\in\mathbb{R}^{4\times L_{\mathrm{uni}}}$，计算其与各类别模板之间的 DTW 距离
+\begin{equation}
+    D_c=\mathrm{DTW}\big(\mathbf{X},\,\mathbf{X}_{\mathrm{ref}}^{(c)}\big),\qquad c\in\{1,2,3\},
+\end{equation}
+并选取最小距离对应的参考类别
+\begin{equation}
+    c^\ast=\arg\min_c D_c.
+\end{equation}
+随后以选定模板为参考，对输入样本进行时间对齐，得到对齐后的四通道序列 $\mathbf{X}'\in\mathbb{R}^{4\times L_{\mathrm{uni}}}$，再输入卷积网络完成分类。该方法在不增加输入通道数的条件下引入了 DTW 对齐，因此适合作为验证时间对齐有效性的直接对照。
+
+考虑到同一类别内部的地磁波形不仅受车型影响，还会随车速变化而改变事件持续长度，因此本文进一步提出多模板 DTW 增强方法，以扩大类内形态覆盖范围。为避免与端侧特征维度 $K$ 混淆，模板数统一记为 $K_{\mathrm{MT}}$。本文采用事件持续时间作为速度变化的代理变量，在每个类别的训练样本中按持续时间分位点选取 $K_{\mathrm{MT}}$ 个代表性模板。当 $K_{\mathrm{MT}}>1$ 时，在区间 $[0.15,\,0.85]$ 上均匀选取 $K_{\mathrm{MT}}$ 个分位点，并在各类别训练样本中选取持续时间最接近相应分位点的事件作为模板。若第 $k$ 个分位点记为
+\begin{equation}
+    q_k=0.15+\frac{0.70(k-1)}{K_{\mathrm{MT}}-1},\qquad k=1,2,\ldots,K_{\mathrm{MT}},
+\end{equation}
+则可据此为每一类构造模板集合
+\begin{equation}
+    \mathcal{R}_c=\{r_{c,1},r_{c,2},\ldots,r_{c,K_{\mathrm{MT}}}\}.
+\end{equation}
+
+对于任一样本 $\mathbf{X}\in\mathbb{R}^{4\times L_{\mathrm{uni}}}$，分别以所有类别模板为参考进行 DTW 对齐，得到 $3K_{\mathrm{MT}}$ 组四通道对齐序列 $\mathbf{X}'_{c,k}\in\mathbb{R}^{4\times L_{\mathrm{uni}}}$。随后按通道维进行拼接，形成多模板输入张量
+\begin{equation}
+    \mathbf{X}_{\mathrm{MT}}=
+    \mathrm{Concat}\Big(
+    \mathbf{X}'_{1,1},\ldots,\mathbf{X}'_{1,K_{\mathrm{MT}}},
+    \mathbf{X}'_{2,1},\ldots,\mathbf{X}'_{2,K_{\mathrm{MT}}},
+    \mathbf{X}'_{3,1},\ldots,\mathbf{X}'_{3,K_{\mathrm{MT}}}
+    \Big)\allowbreak\in\mathbb{R}^{(12K_{\mathrm{MT}})\times L_{\mathrm{uni}}}.
+\end{equation}
+该输入张量随后进入与离线基线相同的一维卷积网络进行端到端学习。模板数 $K_{\mathrm{MT}}$ 由验证集宏平均 $F_1$ 选择，并在指标接近时优先取较小值，以控制计算量和模型规模。
+
+需要指出的是，多模板拼接会增加输入通道数与网络容量。为排除性能提升仅仅来自通道数增加这一解释，本文设置通道复制对照，即在不引入 DTW 对齐信息的前提下，将线性定长卷积网络基线的四通道输入复制到与多模板输入相同的通道数，并采用相同网络结构和训练策略进行比较。若多模板 DTW 方法相对该对照仍有稳定增益，则可以说明性能提升主要来自 DTW 对齐及多模板表征本身，而非单纯的模型容量扩大。
+
+
+\section{实验测试结果与性能分析}
+\label{sec:ch3_exp}
+
+\subsection{实验场景与参数设置}
+\label{subsec:ch3_exp_setup}
+
+本文实测数据由路侧三轴地磁节点采集，采样频率为 $50\,\mathrm{Hz}$。车辆事件边界由第\ref{ch:ch2_event_detect}章给出的车辆事件检测结果确定，本章按事件边界从连续序列中截取得到单车事件片段，并结合人工核验的车型标签构建三分类数据集。实验场景与路侧单地磁节点部署现场如图~\ref{fig:ch3_scene_setup} 所示。关于传感器部署形态与事件检测平台组成，前文已经说明，本节不再重复展开。
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.58\linewidth,trim=0 10 0 10,clip]{../images/ch3_scene_setup.png}
+  \caption{实验场景与路侧单地磁节点部署现场照片}
+  \label{fig:ch3_scene_setup}
+\end{figure}
+
+所有方法均复用第\ref{subsec:ch3_split_term}节给出的固定划分索引，并采用一致的数据预处理与评价指标。端侧方法在候选特征中进行 Top-$K$ 搜索，并在相同特征输入条件下比较 Softmax 分类器、支持向量机和决策树三类分类器；离线方法以线性定长卷积网络为基线，并进一步比较单模板 DTW 增强和多模板 DTW 增强方法。其中，训练阶段对少数类进行随机过采样，验证集和测试集不进行重采样。
+
+本节固定参数设置如下：统一长度 $L_{\mathrm{uni}}=176$。离线卷积网络相关实验统一采用 Adam 优化器进行训练，学习率设为 $5\times10^{-4}$，权重衰减设为 $1\times10^{-4}$，最大训练轮数设为 200，并采用基于验证集宏平均 $F_1$ 的早停策略，早停耐心轮数设为 30。对于本文最终采用的 DTW 多模板方法，Sakoe--Chiba 窗口比例设为 $w_R=0.10$，步进惩罚项设为 $\lambda=0.00$，并在 $K_{\mathrm{MT}}\in\{2,3,4\}$ 上进行模板数扫描；最终配置由验证集指标选择为 $K_{\mathrm{MT}}^\ast=2$。单模板 DBA 消融实验中的迭代次数设为 10。训练过程中保留验证集指标最优时对应的模型参数，并以该最优轮次对应模型作为测试集评估结果。
+
+本文采用总体准确率和宏平均 $F_1$ 作为主要评价指标，并结合混淆矩阵分析类别间的误判模式。宏平均 $F_1$ 定义为
+\begin{equation}
+    F_{1,\mathrm{macro}}=\frac{1}{3}\sum_{k=1}^{3}F_{1,k},
+\end{equation}
+其中 $F_{1,k}$ 为第 $k$ 类的 $F_1$ 值。该指标能够平衡不同类别对整体性能的贡献，更适合评价存在类别不均衡的三分类问题。
+
+\subsection{测试结果分析}
+\label{subsec:ch3_exp_result}
+
+\textbf{（1）端侧轻量方法结果。}
+表~\ref{tab:ch3_edge} 给出了端侧统计特征链路在测试集上的性能比较。这里报告的是在 4--7 维扩展搜索条件下得到的端侧性能上界，用于与离线链路进行总体比较；前文用于部署说明的特征维度仍取 $K=5$。
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{端侧轻量基线性能对比（测试集）}
+\label{tab:ch3_edge}
+\begin{tabular}{lcc}
+\hline
+方法 & 测试集 Accuracy（\%） & 测试集 宏平均 $F_1$（\%） \\
+\hline
+\input{../tables/ch3_edge_rows.tex}\\
+\hline
+\end{tabular}
+\end{table}
+
+从结果可以看出，在扩展搜索得到的端侧上界中，Softmax 分类器在准确率和宏平均 $F_1$ 两项指标上均达到最优，说明低维统计特征链路在不引入复杂时序模型的条件下已经能够较好表征单地磁事件片段中的车型差异。与此同时，前文基于验证集确定的 $K=5$ 部署特征集仍保留了更紧凑的实现形式，因此本文在工程部署说明中继续以 Softmax 回归作为端侧基线，而将这里的上界结果用于和离线增强链路进行性能层级比较。支持向量机与决策树则主要作为传统模型对照，用于验证特征子集的可分性及分析误差来源。
+
+\textbf{（2）离线增强方法总体结果。}
+为比较时间对齐方法对车型分类性能的影响，表~\ref{tab:ch3_overall} 汇总了端侧部署基线、线性定长卷积网络基线以及 DTW 增强方法在测试集上的总体性能。其中，线性定长卷积网络基线仅进行线性重采样而不引入 DTW，对应于离线链路的基础对照；本文最终方法则在此基础上加入 DTW 多模板对齐表征。
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{不同车型分类方案总体性能对比}
+\label{tab:ch3_overall}
+\begin{tabular}{lcc}
+\hline
+方法 & 测试集 Accuracy（\%） & 测试集 宏平均 $F_1$（\%） \\
+\hline
+\input{../tables/ch3_overall_rows.tex}\\
+\hline
+\end{tabular}
+\end{table}
+
+表3.9的结果表明，本章两条技术路线的职责分工仍然清晰。端侧统计特征加 Softmax 链路在扩展搜索上界下取得了 89.76\% 的准确率和 88.39\% 的宏平均 $F_1$，说明在有限增维条件下，单地磁事件片段已经能够支撑较低开销的三分类部署。线性定长卷积网络基线进一步利用了原始时序波形中的局部结构信息，在统一训练参数下将测试集准确率和宏平均 $F_1$ 提升至 90.73\% 和 89.97\%。在此基础上进一步引入 DTW 多模板对齐后，最终的 Raw-Quantile 多模板方法将测试集准确率和宏平均 $F_1$ 提升至 96.10\% 和 95.80\%，说明在不显式估计车速的条件下，时间对齐能够有效缓解速度变化带来的时序伸缩问题，并显著提升单地磁车型分类的稳定性。已有研究表明，单磁传感器在实时在线分类场景下同样具有较强应用潜力\cite{ch3_sarcevic2022singlemag}。结合本章结果可以看出，在多类别复杂样本条件下，性能仍会受到时间伸缩和类内波动的明显影响。
+
+图~\ref{fig:ch3_cnn_train} 给出了线性定长一维卷积网络基线在统一训练参数下的训练与验证曲线。可以看出，训练损失与验证损失均随迭代逐步下降并在中后期趋于稳定，验证集准确率和宏平均 $F_1$ 也在早停轮次附近完成收敛，未出现明显的后期发散现象，说明当前网络规模与正则化设置能够在本数据集上保持较稳定的训练过程。
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.82\linewidth]{../images/ch3_cnn_training_curve.png}
+\caption{线性定长一维卷积网络基线的训练与验证曲线}
+\label{fig:ch3_cnn_train}
+\end{figure}
+
+结合图3.9和表3.10可以进一步看出，离线增强方法的主要收益并非平均分布于三类样本，而是集中体现在中型车这一过渡类别上。相较于线性定长卷积网络基线，中型车的 Recall 由 85.25\% 提升至 96.72\%，$F_1$ 由 84.55\% 提升至 93.65\%，对应提升幅度分别达到 11.48 和 9.10 个百分点。其原因在于，中型车在持续时间、扰动能量和局部峰谷结构上同时与小型车、大型车存在一定重叠，最容易受到车速变化和局部错位的影响。DTW 对齐首先改善了同类样本关键结构在时间轴上的对应关系，而 $K_{\mathrm{MT}}=2$ 的多模板表征进一步覆盖了中型车内部的主要形态差异，因此中型车仍然是宏平均 $F_1$ 提升的主要来源。
+
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{../images/cm_cnn_baseline.png}
+  \caption{线性定长卷积网络基线}
+  \label{fig:ch3_cm_cnn}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{../images/cm_dtw_multi_cnn.png}
+  \caption{DTW 多模板增强方法}
+  \label{fig:ch3_cm_multi}
+\end{subfigure}
+\caption{离线链路混淆矩阵对比（测试集）}
+\label{fig:ch3_cm_compare}
+\end{figure}
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{各类别 Precision、Recall 与 $F_1$ 对比（测试集）}
+\label{tab:ch3_prf_by_class}
+\renewcommand{\arraystretch}{1.25}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{c ccc ccc}
+\hline
+类别 & \multicolumn{3}{c}{线性定长卷积网络基线} & \multicolumn{3}{c}{DTW 多模板增强方法} \\
+\cline{2-7}
+ & Precision & Recall & $F_1$ & Precision & Recall & $F_1$ \\
+\hline
+小型车 & 93.33\% & 95.15\% & 94.23\% & 98.04\% & 97.09\% & 97.56\% \\
+中型车 & 83.87\% & 85.25\% & 84.55\% & 90.77\% & 96.72\% & 93.65\% \\
+大型车 & 94.74\% & 87.80\% & 91.14\% & 100.00\% & 92.68\% & 96.20\% \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{消融实验与结果讨论}
+\label{subsec:ch3_ablation}
+
+为进一步验证方法有效性，本文从单模板对齐、多模板数量选择以及容量控制三个方面进行消融实验。表~\ref{tab:ch3_ablation_methods} 汇总了相关结果，其中第一部分用于比较不同单模板策略在不增加输入通道数条件下的表现，第二部分用于比较通道复制对照与多模板 DTW 增强方法之间的差异。
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{方法消融与容量控制对照结果}
+\label{tab:ch3_ablation_methods}
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{lcc}
+\hline
+方法 & 测试集 Accuracy（\%） & 测试集 宏平均 $F_1$（\%） \\
+\hline
+\multicolumn{3}{l}{\textbf{(1) 单模板策略消融（输入维度不变）}}\\
+离线 CNN（线性定长） & 90.73\% & 89.97\% \\
+\input{../tables/ch3_ablation_clsmin_template_rows.tex}\\
+\hline
+\multicolumn{3}{l}{\textbf{(2) 容量控制对照}}\\
+\input{../tables/ch3_ablation_rep_rows.tex}\\
+\hline
+\end{tabular}
+\end{table}
+
+从单模板策略的结果可以看出，在统一训练参数与相同 DTW 窗口设置下，ClsMin-Mean 单模板的宏平均 $F_1$ 为 88.50\%，略低于线性定长卷积网络基线的 89.97\%，说明简单均值模板在当前条件下仍容易受到局部错位和模板代表性不足的影响。相比之下，ClsMin-DBA 单模板的宏平均 $F_1$ 达到 91.46\%，相较基线取得了稳定增益。这表明 DTW 对齐本身能够提供有效信息，而模板构造方式会直接影响单模板增强链路的收益水平。因此，单模板消融实验仍然为“时间对齐有效”这一结论提供了直接证据，但稳定增益主要来自更合理的对齐模板构造。
+
+在多模板增强方法中，模板数量 $K_{\mathrm{MT}}$ 的选择会直接影响类内形态覆盖范围和计算量。图~\ref{fig:ch3_ablation_k} 给出了在固定训练参数和固定 DTW 参数下，不同模板数量对应的验证集与测试集宏平均 $F_1$ 变化情况。可以看出，模板数并非越大越好：当 $K_{\mathrm{MT}}$ 从 2 增加到 3 或 4 时，验证集和测试集性能都未继续稳定提升，而对齐次数却会线性增加。因此，本文最终根据验证集结果选择 $K_{\mathrm{MT}}^\ast=2$ 作为最优模板数，在保证性能的同时压缩了多模板方法的额外开销。
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.72\linewidth]{../images/ablation_K.png}
+\caption{多模板数量 $K_{\mathrm{MT}}$ 消融结果}
+\label{fig:ch3_ablation_k}
+\end{figure}
+
+为了排除性能提升仅由输入通道数增加而引起的解释，本文进一步设置了容量控制对照。该对照将线性定长卷积网络基线的四通道输入复制到与最终多模板方法一致的 24 通道维度，并保持网络结构与训练策略一致，但不引入 DTW 对齐信息。结果表明，在输入通道数相同的条件下，Replication Control 的宏平均 $F_1$ 仅为 88.40\%，明显低于最终 DTW 多模板增强方法的 95.80\%。这说明最终增益不能简单归因于模型容量变化，而主要来自 DTW 对齐和多模板表征所引入的有效结构信息。
+
+从工程实现角度看，端侧轻量方法仅包含事件片段的统计特征提取和低维向量分类，其计算量主要对应一次线性遍历和简单矩阵运算，适合在低功耗节点上部署。相比之下，最终 DTW 多模板增强方法在每个样本上需要执行 $3K_{\mathrm{MT}}=6$ 次动态规划对齐，其计算开销仍显著高于端侧链路，因此更适合作为离线评估与机理验证方法，而不直接作为端侧在线方案。这一点也与本章“端侧部署基线与离线性能上限并行分析”的设计目标一致。
+
+为进一步从工程角度比较不同方法的开销差异，表~\ref{tab:ch3_complexity} 给出了三类典型方案在单事件尺度上的主要计算组成与复杂度数量级估计。需要说明的是，该复杂度为理论量级分析，用于反映随事件长度或模板数量变化的趋势，实际运行时间仍会受到具体实现与硬件平台的影响。
+
+\begin{table}[!htbp]
+\centering
+\small
+\caption{不同车型分类方案复杂度比较}
+\label{tab:ch3_complexity}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{2.8cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{4.1cm}}
+\hline
+方法 & 主要计算步骤 & 单事件复杂度（量级） \\
+\hline
+端侧统计特征 + Softmax & 特征提取（求和、求极值等）+ 线性判别 & $\mathcal{O}(N)+\mathcal{O}(KC)$ \\
+离线 CNN（线性定长） & 线性重采样 + 多层一维卷积与池化 & $\mathcal{O}(L_{\mathrm{uni}})+\mathcal{O}(L_{\mathrm{uni}}\cdot\Gamma)$ \\
+DTW 单模板 + CNN & 3 次 DTW 对齐 + CNN 推理 & $\mathcal{O}(3L_{\mathrm{uni}}w)+\mathcal{O}(L_{\mathrm{uni}}\cdot\Gamma)$ \\
+DTW 多模板 + CNN & $3K_{\mathrm{MT}}$ 次 DTW 对齐 + CNN 推理 & $\mathcal{O}(3K_{\mathrm{MT}}L_{\mathrm{uni}}w)+\mathcal{O}(L_{\mathrm{uni}}\cdot\Gamma)$ \\
+\hline
+\end{tabularx}
+\end{table}
+
+其中，$N$ 为事件片段长度，$L_{\mathrm{uni}}$ 为统一长度，$w$ 为 DTW 窗口半径，$\Gamma$ 表示卷积网络在固定结构下与卷积核规模、通道数相关的常数项。从表中可以看出，DTW 多模板方法的主要开销来自多次动态规划对齐，其计算量随模板数线性增长。由于本文最终采用的 $K_{\mathrm{MT}}^\ast=2$ 已经能够取得最优验证表现，因此该配置在性能和额外对齐开销之间形成了更平衡的折中。
+
+结合总体结果和混淆矩阵可以看出，中型车仍然是最主要的误差来源。造成误差的因素主要包括三方面：其一，部分中型车在体量和结构上同时接近小型车和大型车，导致类间边界天然模糊；其二，事件边界存在轻微偏差时，车辆头部或尾部波形可能被截断，影响对齐和分类；其三，连续车流干扰、环境慢漂移以及车辆横向位置变化都会引入附加波形差异。尽管如此，本文方法已经能够通过时间对齐和多模板覆盖显著降低中型车与相邻类别的混淆，说明所提出的离线增强链路具有较好的有效性。
+
+
+\section{本章小结}
+\label{sec:ch3_summary}
+
+本章基于第二章给出的车辆事件片段，研究了单节点三轴地磁条件下的车型三分类问题，并围绕工程部署约束与车速变化影响，分别构建了端侧轻量分类方法与离线增强分类方法。
+
+在数据构建方面，本文明确了小型车、中型车和大型车三类标签的划分口径，采用视频核验、类别映射与事件对齐复查相结合的流程构建单车事件样本，并统一定义了基线扣除后的三轴扰动序列及其模值表示。在端侧方法方面，本文构建了基于统计特征的轻量分类基线，并保留 5 个代表性特征用于部署说明；在此基础上进一步进行有限增维扩展搜索，得到端侧统计特征链路的性能上界。实验结果表明，Softmax 回归在扩展搜索上界下于测试集取得了 89.76\% 的准确率和 88.39\% 的宏平均 $F_1$，能够作为端侧轻量方案的参考上界，而部署口径仍保持更紧凑的 5 特征配置。
+
+在离线增强方法方面，本文构建了线性定长卷积网络基线，并进一步引入 DTW 对齐形成单模板增强和多模板增强两类方法。实验结果表明，在统一训练参数下，线性定长卷积网络基线的测试集准确率和宏平均 $F_1$ 分别达到 90.73\% 和 89.97\%；进一步采用 Raw-Quantile 多模板 DTW 增强后，最终方法在测试集上取得了 96.10\% 的准确率和 95.80\% 的宏平均 $F_1$，主要改善了中型车与相邻类别之间的混淆。综上，单地磁事件片段在较低部署成本下具备支撑车型三分类任务的能力，而时间对齐与多模板表征对复杂工况下的性能提升具有积极作用。
+
+
+
+

@@ -1,0 +1,9 @@
+BASE val 0.922 0.918 test 0.8683 0.8601
+DTWmulti tpc 3 wR 0.1 step 0.0 build_s 5.89 val 0.961 0.9585 test 0.9171 0.9184
+DTWmulti tpc 3 wR 0.15 step 0.0 build_s 1.11 val 0.9415 0.941 test 0.8829 0.8814
+DTWmulti tpc 3 wR 0.2 step 0.0 build_s 2.07 val 0.9561 0.9542 test 0.922 0.9207
+DTWmulti tpc 3 wR 0.15 step 0.05 build_s 1.14 val 0.961 0.9638 test 0.9171 0.9208
+DTWmulti tpc 4 wR 0.15 step 0.0 build_s 1.5 val 0.9512 0.9527 test 0.9415 0.9393
+DTWmulti tpc 4 wR 0.15 step 0.05 build_s 1.51 val 0.9659 0.9676 test 0.9659 0.9649
+DTWmulti tpc 5 wR 0.15 step 0.0 build_s 1.9 val 0.9561 0.9566 test 0.9512 0.9498
+BEST_by_val_f1 (0.967611080151468, (4, 0.15, 0.05, 0.9658536585365853, 0.9658536585365853, 0.964869918699187))

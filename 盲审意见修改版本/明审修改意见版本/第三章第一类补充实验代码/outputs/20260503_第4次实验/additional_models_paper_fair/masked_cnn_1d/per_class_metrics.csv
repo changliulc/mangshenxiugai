@@ -1,0 +1,4 @@
+﻿experiment,validation_type,run_id,seed,model,class_id,class_name,precision,recall,f1,support
+additional_models,stratified_random,0,42,masked_cnn_1d,0,small,0.9423076923076923,0.9514563106796117,0.9468599033816425,103
+additional_models,stratified_random,0,42,masked_cnn_1d,1,medium,0.84375,0.8852459016393442,0.864,61
+additional_models,stratified_random,0,42,masked_cnn_1d,2,large,0.972972972972973,0.8780487804878049,0.923076923076923,41

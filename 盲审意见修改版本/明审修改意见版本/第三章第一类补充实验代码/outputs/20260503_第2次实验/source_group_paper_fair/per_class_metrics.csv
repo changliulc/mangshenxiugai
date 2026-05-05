@@ -1,0 +1,10 @@
+﻿experiment,validation_type,run_id,seed,model,class_id,class_name,precision,recall,f1,support
+source_group_validation,source_group,0,42,fixed_cnn_1d,0,small,0.9405940594059405,0.9223300970873787,0.9313725490196079,103
+source_group_validation,source_group,0,42,fixed_cnn_1d,1,medium,0.8225806451612904,0.8360655737704918,0.829268292682927,61
+source_group_validation,source_group,0,42,fixed_cnn_1d,2,large,0.9047619047619048,0.926829268292683,0.9156626506024096,41
+source_group_validation,source_group,0,42,lstm_h64,0,small,0.831858407079646,0.912621359223301,0.8703703703703703,103
+source_group_validation,source_group,0,42,lstm_h64,1,medium,0.6949152542372882,0.6721311475409836,0.6833333333333333,61
+source_group_validation,source_group,0,42,lstm_h64,2,large,0.9696969696969697,0.7804878048780488,0.8648648648648648,41
+source_group_validation,source_group,0,42,lstm_h32,0,small,0.9032258064516129,0.8155339805825242,0.8571428571428571,103
+source_group_validation,source_group,0,42,lstm_h32,1,medium,0.6164383561643836,0.7377049180327869,0.6716417910447762,61
+source_group_validation,source_group,0,42,lstm_h32,2,large,0.8205128205128205,0.7804878048780488,0.8,41

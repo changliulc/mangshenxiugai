@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler-25.02.0" version="25.02.0">
+<page number="53" position="absolute" top="0" left="0" height="1262" width="892">
+	<fontspec id="0" size="16" family="IHNCPH+SimSun" color="#000000"/>
+	<fontspec id="1" size="16" family="AWJUKL+TimesNewRomanPSMT" color="#000000"/>
+	<fontspec id="2" size="18" family="IHNCPH+SimSun" color="#000000"/>
+	<fontspec id="3" size="18" family="XCATTL+CambriaMath" color="#000000"/>
+	<fontspec id="4" size="13" family="XCATTL+CambriaMath" color="#000000"/>
+	<fontspec id="5" size="18" family="AWJUKL+TimesNewRomanPSMT" color="#000000"/>
+	<fontspec id="6" size="13" family="AWJUKL+TimesNewRomanPSMT" color="#000000"/>
+	<fontspec id="7" size="18" family="RIORQU+TimesNewRomanPS" color="#000000"/>
+	<fontspec id="8" size="11" family="AWJUKL+TimesNewRomanPSMT" color="#000000"/>
+	<fontspec id="9" size="14" family="AWJUKL+TimesNewRomanPSMT" color="#000000"/>
+<image top="134" left="213" width="488" height="390" src="single53-53_1.png"/>
+<text top="95" left="307" width="47" height="16" font="0">第三章</text>
+<text top="95" left="370" width="236" height="16" font="0">基于单地磁传感器的车型分类方法</text>
+<text top="532" left="292" width="16" height="16" font="0">图</text>
+<text top="534" left="311" width="20" height="14" font="1">3.5</text>
+<text top="532" left="343" width="63" height="16" font="0">同类样本</text>
+<text top="534" left="410" width="36" height="14" font="1">DTW</text>
+<text top="532" left="449" width="173" height="16" font="0">对齐后的结构对应示意图</text>
+<text top="581" left="128" width="252" height="18" font="2">据此，线性插值后的输入记为：</text>
+<text top="630" left="301" width="12" height="18" font="3">𝑋</text>
+<text top="638" left="312" width="15" height="13" font="4">𝑖,𝓁</text>
+<text top="630" left="332" width="68" height="18" font="3">= (1 − 𝛼</text>
+<text top="638" left="400" width="7" height="13" font="4">𝓁</text>
+<text top="630" left="408" width="20" height="18" font="3">) 𝑥</text>
+<text top="638" left="428" width="5" height="13" font="4">𝑖</text>
+<text top="630" left="434" width="93" height="18" font="3">(⌊𝑟(𝓁)⌋) + 𝛼</text>
+<text top="638" left="527" width="7" height="13" font="4">𝓁</text>
+<text top="630" left="537" width="10" height="18" font="3">𝑥</text>
+<text top="638" left="547" width="5" height="13" font="4">𝑖</text>
+<text top="630" left="552" width="61" height="18" font="3">(⌈𝑟(𝓁)⌉)</text>
+<text top="632" left="742" width="45" height="16" font="5">(3-22)</text>
+<text top="677" left="128" width="36" height="18" font="2">其中</text>
+<text top="678" left="169" width="11" height="18" font="3">𝛼</text>
+<text top="686" left="179" width="7" height="13" font="4">𝓁</text>
+<text top="678" left="193" width="121" height="18" font="3">= 𝑟(𝓁) − ⌊𝑟(𝓁)⌋</text>
+<text top="677" left="313" width="18" height="18" font="2">，</text>
+<text top="678" left="331" width="10" height="18" font="3">𝑥</text>
+<text top="686" left="341" width="5" height="13" font="4">𝑖</text>
+<text top="678" left="347" width="20" height="18" font="3">(⋅)</text>
+<text top="677" left="372" width="54" height="18" font="2">表示第</text>
+<text top="678" left="431" width="6" height="18" font="3">𝑖</text>
+<text top="677" left="442" width="345" height="18" font="2">个通道的原始序列。该过程等价于对时间轴</text>
+<text top="707" left="128" width="659" height="18" font="2">施加全局线性伸缩，能够在一定程度上缓解整体时长差异，但仍无法恢复局部关键结</text>
+<text top="736" left="128" width="216" height="18" font="2">构之间的非线性对应关系。</text>
+<text top="766" left="164" width="623" height="18" font="2">为减弱不同通道量纲和幅值范围差异对网络训练的影响，本文对四通道定长序</text>
+<text top="796" left="128" width="394" height="18" font="2">列按通道进行标准分数标准化。设训练集样本数为</text>
+<text top="798" left="525" width="15" height="18" font="3">𝑀</text>
+<text top="806" left="541" width="8" height="12" font="6">tr</text>
+<text top="796" left="550" width="69" height="18" font="2">，对于第</text>
+<text top="798" left="623" width="15" height="18" font="3">𝑚</text>
+<text top="796" left="643" width="144" height="18" font="2">个训练样本的定长</text>
+<text top="826" left="128" width="72" height="18" font="2">输入矩阵</text>
+<text top="829" left="204" width="13" height="16" font="7"><b>X</b></text>
+<text top="825" left="217" width="23" height="13" font="4">(𝑚)</text>
+<text top="828" left="246" width="30" height="18" font="3">∈ ℝ</text>
+<text top="825" left="276" width="24" height="13" font="4">4×𝐿</text>
+<text top="830" left="300" width="14" height="10" font="8">uni</text>
+<text top="826" left="315" width="36" height="18" font="2">，第</text>
+<text top="828" left="356" width="6" height="18" font="3">𝑖</text>
+<text top="826" left="367" width="378" height="18" font="2">个通道在训练集上的均值和标准差分别定义为：</text>
+<text top="887" left="361" width="10" height="18" font="3">𝜇</text>
+<text top="895" left="371" width="5" height="13" font="4">𝑖</text>
+<text top="887" left="381" width="13" height="18" font="3">=</text>
+<text top="874" left="422" width="10" height="18" font="3">1</text>
+<text top="900" left="402" width="15" height="18" font="3">𝑀</text>
+<text top="908" left="417" width="8" height="12" font="6">tr</text>
+<text top="900" left="426" width="10" height="18" font="3">𝐿</text>
+<text top="908" left="435" width="17" height="12" font="6">uni</text>
+<text top="865" left="463" width="12" height="13" font="4">𝑀</text>
+<text top="870" left="475" width="7" height="10" font="8">tr</text>
+<text top="914" left="458" width="30" height="13" font="4">𝑚=1</text>
+<text top="865" left="491" width="7" height="13" font="4">𝐿</text>
+<text top="870" left="499" width="14" height="10" font="8">uni</text>
+<text top="914" left="490" width="24" height="13" font="4">𝓁=1</text>
+<text top="887" left="517" width="12" height="18" font="3">𝑋</text>
+<text top="882" left="529" width="23" height="13" font="4">(𝑚)</text>
+<text top="896" left="528" width="15" height="13" font="4">𝑖,𝓁</text>
+<text top="889" left="742" width="45" height="16" font="5">(3-23)</text>
+<text top="983" left="323" width="11" height="18" font="3">𝜎</text>
+<text top="990" left="332" width="5" height="13" font="4">𝑖</text>
+<text top="983" left="343" width="13" height="18" font="3">=</text>
+<text top="969" left="397" width="10" height="18" font="3">1</text>
+<text top="995" left="377" width="15" height="18" font="3">𝑀</text>
+<text top="1004" left="392" width="8" height="12" font="6">tr</text>
+<text top="995" left="401" width="10" height="18" font="3">𝐿</text>
+<text top="1004" left="410" width="17" height="12" font="6">uni</text>
+<text top="960" left="438" width="12" height="13" font="4">𝑀</text>
+<text top="965" left="450" width="7" height="10" font="8">tr</text>
+<text top="1010" left="433" width="30" height="13" font="4">𝑚=1</text>
+<text top="960" left="466" width="7" height="13" font="4">𝐿</text>
+<text top="965" left="474" width="14" height="10" font="8">uni</text>
+<text top="1010" left="465" width="24" height="13" font="4">𝓁=1</text>
+<text top="983" left="501" width="12" height="18" font="3">𝑋</text>
+<text top="977" left="513" width="23" height="13" font="4">(𝑚)</text>
+<text top="992" left="512" width="15" height="13" font="4">𝑖,𝓁</text>
+<text top="983" left="541" width="27" height="18" font="3">− 𝜇</text>
+<text top="990" left="569" width="5" height="13" font="4">𝑖</text>
+<text top="970" left="583" width="8" height="13" font="4">2</text>
+<text top="984" left="742" width="45" height="16" font="5">(3-24)</text>
+<text top="1048" left="128" width="180" height="18" font="2">则归一化后的输入为：</text>
+<text top="1094" left="299" width="0" height="18" font="3">̃</text>
+<text top="1097" left="289" width="12" height="18" font="3">𝑋</text>
+<text top="1105" left="300" width="15" height="13" font="4">𝑖,𝓁</text>
+<text top="1097" left="320" width="13" height="18" font="3">=</text>
+<text top="1084" left="341" width="12" height="18" font="3">𝑋</text>
+<text top="1091" left="351" width="15" height="13" font="4">𝑖,𝓁</text>
+<text top="1084" left="371" width="27" height="18" font="3">− 𝜇</text>
+<text top="1091" left="398" width="5" height="13" font="4">𝑖</text>
+<text top="1109" left="349" width="11" height="18" font="3">𝜎</text>
+<text top="1117" left="359" width="5" height="13" font="4">𝑖</text>
+<text top="1109" left="368" width="26" height="18" font="3">+ 𝜖</text>
+<text top="1097" left="406" width="202" height="18" font="3">, 𝑖 = 1, 2, 3, 4, 𝓁 = 1, 2, … , 𝐿</text>
+<text top="1106" left="607" width="17" height="12" font="6">uni</text>
+<text top="1099" left="742" width="45" height="16" font="5">(3-25)</text>
+<text top="1179" left="450" width="14" height="12" font="9">31</text>
+</page>
+<outline>
+<item page="7">摘要</item>
+<item page="9">ABSTRACT</item>
+<item page="11">插图索引</item>
+<item page="13">表格索引</item>
+<item page="15">符号对照表</item>
+<item page="19">缩略语对照表</item>
+<item page="21">目录</item>
+<item page="23">第一章  绪论</item>
+<outline>
+<item page="23">1.1 研究背景及研究意义</item>
+<item page="24">1.2 国内外研究现状</item>
+<outline>
+<item page="24">1.2.1 单地磁车辆事件检测研究现状</item>
+<item page="25">1.2.2 单地磁车型分类研究现状</item>
+<item page="26">1.2.3 单地磁停车与占用检测研究现状</item>
+</outline>
+<item page="28">1.3 研究内容及章节安排</item>
+<outline>
+<item page="28">1.3.1 研究内容</item>
+<item page="28">1.3.2 章节安排</item>
+</outline>
+</outline>
+<item page="31">第二章  地磁车辆事件检测原理与系统设计</item>
+<outline>
+<item page="31">2.1 引言</item>
+<item page="31">2.2 地磁车辆检测基本原理</item>
+<outline>
+<item page="31">2.2.1 车辆检测算法基本原理</item>
+<item page="34">2.2.2 基于一阶差分的状态机车辆检测算法</item>
+</outline>
+<item page="39">2.3 地磁车辆检测系统</item>
+<outline>
+<item page="39">2.3.1 地磁车辆检测模块</item>
+<item page="40">2.3.2 车辆信息检测平台</item>
+</outline>
+<item page="42">2.4 本章小结</item>
+</outline>
+<item page="43">第三章  基于单地磁传感器的车型分类方法</item>
+<outline>
+<item page="43">3.1 引言</item>
+<item page="43">3.2 车型分类任务定义与样本表示</item>
+<outline>
+<item page="43">3.2.1 标签定义与标注口径</item>
+<item page="44">3.2.2 事件级样本与输入表示</item>
+</outline>
+<item page="45">3.3 端侧轻量车型分类方法</item>
+<outline>
+<item page="46">3.3.1 候选统计特征构造与筛选</item>
+<item page="50">3.3.2 轻量分类器设计</item>
+</outline>
+<item page="51">3.4 基于时间规整的离线增强分类方法</item>
+<outline>
+<item page="51">3.4.1 车速变化与线性定长卷积网络基线</item>
+<item page="54">3.4.2 基于动态时间规整的对齐增强方法</item>
+</outline>
+<item page="58">3.5 实验结果与分析</item>
+<outline>
+<item page="58">3.5.1 实验场景、数据集与评价指标</item>
+<item page="60">3.5.2 参数选择与实验设置</item>
+<item page="63">3.5.3 总体结果分析</item>
+<item page="65">3.5.4 消融实验与讨论</item>
+</outline>
+<item page="67">3.6 本章小结</item>
+</outline>
+<item page="69">第四章  基于信号稳定点的道路停车与占用检测方法</item>
+<outline>
+<item page="69">4.1 引言</item>
+<item page="70">4.2 场景定义与信号特性</item>
+<outline>
+<item page="70">4.2.1 场景特性与信号分析</item>
+<item page="71">4.2.2 任务定义与状态口径</item>
+</outline>
+<item page="72">4.3 基于稳定点的停车与占用判定方法</item>
+<outline>
+<item page="72">4.3.1 稳定窗判定与稳定点提取</item>
+<item page="75">4.3.2 动态参考与状态判定机制</item>
+</outline>
+<item page="77">4.4 鲁棒性策略与参数确定</item>
+<outline>
+<item page="77">4.4.1 漂移抑制、伪稳态抑制与连续车流处理</item>
+<item page="79">4.4.2 参数确定与全局配置</item>
+</outline>
+<item page="81">4.5 实验结果与分析</item>
+<outline>
+<item page="81">4.5.1 实验场景、工况分组与评价指标</item>
+<item page="85">4.5.2 对比结果分析</item>
+<item page="88">4.5.3 消融实验与结果讨论</item>
+</outline>
+<item page="90">4.6 本章小结</item>
+</outline>
+<item page="91">第五章  总结与展望</item>
+<item page="93">参考文献</item>
+<item page="97">作者简介</item>
+</outline>
+</pdf2xml>

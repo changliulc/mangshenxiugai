@@ -1,0 +1,75 @@
+﻿{
+  "package_dir": "D:\\xidian_Master\\鐮旂┒鐢熻鏂嘰\姣曚笟璁烘枃\\xduts-main\\缁樺浘\\绗笁绔燶\20260304\\out_ch3_revision_pkg_20260314_seed42_v9",
+  "seed": 42,
+  "edge_deployment": {
+    "K": 5,
+    "selected_features": [
+      "x_absarea",
+      "b_energy",
+      "z_max",
+      "x_max",
+      "zc_z"
+    ],
+    "k_curve_source": "D:\\xidian_Master\\鐮旂┒鐢熻鏂嘰\姣曚笟璁烘枃\\xduts-main\\tables\\ch3_edge_k_sweep.csv",
+    "upper_bound_source": "D:\\xidian_Master\\鐮旂┒鐢熻鏂嘰\姣曚笟璁烘枃\\xduts-main\\缁樺浘\\绗笁绔燶\20260304\\out_ch3_lift_r2_20260314_seed42\\results\\summary.json",
+    "upper_bound_softmax": {
+      "test_acc": 0.8975609756097561,
+      "test_f1": 0.8838910551697721
+    }
+  },
+  "offline_unified_config": {
+    "name": "U200",
+    "lr": 0.0005,
+    "weight_decay": 0.0001,
+    "max_epochs": 200,
+    "patience": 30,
+    "dtw_family": "raw_quantile",
+    "K_MT": 2,
+    "wR": 0.1,
+    "step": 0.0,
+    "multi_source": "D:\\xidian_Master\\鐮旂┒鐢熻鏂嘰\姣曚笟璁烘枃\\xduts-main\\缁樺浘\\绗笁绔燶\20260304\\out_ch3_dtw_tune_kle4_20260314_seed42\\results\\summary.json"
+  },
+  "offline_ablation": {
+    "clsmin_mean_test_f1": 0.8849724769317505,
+    "clsmin_dba_test_f1": 0.9146341347384325,
+    "replication_test_f1": 0.8839528901031825
+  },
+  "artifacts": {
+    "tables": [
+      "ch3_dataset_split_rows.tex",
+      "ch3_dataset_stats_rows.tex",
+      "ch3_ablation_K.csv",
+      "ch3_ablation_K_rows.tex",
+      "ch3_ablation_clsmin_template.csv",
+      "ch3_ablation_clsmin_template_rows.tex",
+      "ch3_ablation_rep.csv",
+      "ch3_ablation_rep_rows.tex",
+      "ch3_edge.csv",
+      "ch3_edge_rows.tex",
+      "ch3_edge_selected_features.csv",
+      "ch3_overall.csv",
+      "ch3_overall_rows.tex",
+      "ch3_prf_by_class.csv"
+    ],
+    "images": [
+      "ablation_K.png",
+      "ablation_K_data.mat",
+      "ablation_edge_K.png",
+      "ch3_baseline_flow.png",
+      "ch3_cnn_training_curve.png",
+      "ch3_event_length_boxplot.png",
+      "ch3_feature_importance_authoritative.png",
+      "ch3_mag_energy_boxplot.png",
+      "ch3_scene_setup.png",
+      "ch3_waveform_by_class.png",
+      "cm_cnn_baseline.png",
+      "cm_cnn_baseline_data.mat",
+      "cm_dtw_multi_cnn.png",
+      "cm_dtw_multi_cnn_data.mat",
+      "fig_motivation_dtw_align_z.png",
+      "fig_motivation_speed.png"
+    ],
+    "draft": "D:\\xidian_Master\\鐮旂┒鐢熻鏂嘰\\姣曚笟璁烘枃\\xduts-main\\缁樺浘\\绗笁绔燶\\20260304\\out_ch3_revision_pkg_20260314_seed42_v9\\draft\\chapter3_revision_draft.tex"
+  }
+}
+

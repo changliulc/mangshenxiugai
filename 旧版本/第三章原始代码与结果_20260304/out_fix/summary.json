@@ -1,0 +1,33 @@
+{
+  "n_samples": 1366,
+  "class_counts": {
+    "小型车": 683,
+    "中型车": 410,
+    "大型车": 273
+  },
+  "split_counts": {
+    "train": [
+      478,
+      287,
+      191
+    ],
+    "val": [
+      102,
+      62,
+      41
+    ],
+    "test": [
+      103,
+      61,
+      41
+    ]
+  },
+  "amp_metric": "energy",
+  "rf_val_macro_f1": 0.9189118581913004,
+  "cnn_summary": {
+    "device": "cuda",
+    "best_epoch": 462,
+    "test_acc": 0.9463414634146341,
+    "test_macro_f1": 0.9406853552825162
+  }
+}

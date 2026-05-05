@@ -1,0 +1,3 @@
+method,test_acc,test_f1
+Replication Control（通道复制，K=4）,0.8780487804878049,0.8738748119865787
+DTW-MultiTemplate（K=4）,0.9512195121951219,0.951839962417789

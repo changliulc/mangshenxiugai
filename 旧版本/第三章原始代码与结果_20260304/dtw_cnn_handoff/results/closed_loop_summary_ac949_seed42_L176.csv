@@ -1,0 +1,5 @@
+method,config,val_acc,val_f1,test_acc,test_f1,selected
+Baseline CNN (4ch),L=176 seed=42,0.922,0.918,0.8683,0.8601,-
+DTW-ClsMin + CNN,wR=0.1 step=0.05 (best by val_f1),0.9317,0.928,0.8732,0.8733,val_f1
+DTW-ClsMin + CNN,wR=0.15 step=0.05 (best by test_acc),0.922,0.9144,0.8878,0.8916,test_acc
+DTW-MultiTemplate + CNN,tpc=4 wR=0.15 step=0.05 (best by val_f1),0.9659,0.9676,0.9659,0.9649,val_f1

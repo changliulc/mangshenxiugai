@@ -1,0 +1,3 @@
+﻿method,test_acc,test_f1
+DTW-ClsMin-Mean + CNN（消融）,89.27\%,88.50\%
+DTW-ClsMin-DBA + CNN（消融，iter=10）,92.20\%,91.46\%

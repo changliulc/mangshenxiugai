@@ -1,0 +1,23 @@
+{
+  "local_selected": [
+    "x_absarea",
+    "x_energy",
+    "len_T_sec_fs50",
+    "corr_xz",
+    "z_absarea",
+    "x_ptp"
+  ],
+  "local_selected_zh": [
+    "X 轴绝对面积",
+    "X 轴能量",
+    "事件持续时间",
+    "XZ 相关系数",
+    "Z 轴绝对面积",
+    "X 轴极差"
+  ],
+  "authoritative_selected": null,
+  "authoritative_selected_zh": null,
+  "best_val_macro_f1": 0.8322809245558566,
+  "best_k": 6,
+  "corr_threshold": 0.9
+}

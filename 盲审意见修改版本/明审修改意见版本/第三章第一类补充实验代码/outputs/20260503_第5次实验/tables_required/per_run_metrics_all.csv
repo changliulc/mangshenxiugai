@@ -1,0 +1,15 @@
+﻿experiment,validation_type,preset,oversample,run_id,seed,model,param_count,best_epoch,val_acc,val_macro_f1,test_acc,test_macro_f1,result_dir
+additional_models,stratified_random,paper_fair,0,0,42,gru_h64,38595,118,0.9219512195121952,0.9114662258345961,0.8634146341463415,0.8507094949126249,outputs\20260503_第5次实验\additional_models_paper_fair\gru_h64
+additional_models,stratified_random,paper_fair,0,0,42,masked_cnn_1d,36323,35,0.9219512195121952,0.9168316831683168,0.8975609756097561,0.884978742810068,outputs\20260503_第5次实验\additional_models_paper_fair\masked_cnn_1d
+additional_models,stratified_random,paper_fair,0,0,42,masked_lstm_h64,51395,39,0.8585365853658536,0.8336341236769597,0.8146341463414634,0.7865356419573288,outputs\20260503_第5次实验\additional_models_paper_fair\masked_lstm_h64
+additional_models,stratified_random,paper_fair,0,0,42,resnet1d,111171,49,0.9804878048780488,0.9827113641155387,0.9658536585365853,0.9622116393763722,outputs\20260503_第5次实验\additional_models_paper_fair\resnet1d
+additional_models,stratified_random,paper_fair,0,0,42,transformer_d64,83971,54,0.9609756097560975,0.9608994708994709,0.9219512195121952,0.918061533556512,outputs\20260503_第5次实验\additional_models_paper_fair\transformer_d64
+baselines_lstm,stratified_random,paper_fair,0,0,42,fixed_cnn_1d,36323,134,0.9317073170731708,0.9316895893279833,0.9073170731707317,0.8997428508851787,outputs\20260503_第5次实验\fixed_cnn_recheck_paper_fair
+template_ablation,stratified_random,paper_fair,0,0,42,linear_fixed_cnn,36323,134,0.9317073170731708,0.9316895893279833,0.9073170731707317,0.8997428508851787,outputs\20260503_第5次实验\template_ablation_paper_fair
+template_ablation,stratified_random,paper_fair,0,0,42,dtw_clsmin_mean,36323,85,0.926829268292683,0.9249695612898159,0.8926829268292683,0.8849724769317505,outputs\20260503_第5次实验\template_ablation_paper_fair
+template_ablation,stratified_random,paper_fair,0,0,42,dtw_clsmin_dba,36323,176,0.9317073170731708,0.932672647472144,0.9219512195121952,0.9146341347384325,outputs\20260503_第5次实验\template_ablation_paper_fair
+template_ablation,stratified_random,paper_fair,0,0,42,dtw_multi_quantile_K1,38115,122,0.9512195121951219,0.9522751322751323,0.9170731707317074,0.9150448530617089,outputs\20260503_第5次实验\template_ablation_paper_fair
+template_ablation,stratified_random,paper_fair,0,0,42,dtw_multi_quantile_K2,40803,176,0.975609756097561,0.978319783197832,0.9609756097560975,0.9580476696870646,outputs\20260503_第5次实验\template_ablation_paper_fair
+template_ablation,stratified_random,paper_fair,0,0,42,dtw_multi_quantile_K3,43491,94,0.9512195121951219,0.9495758339252448,0.9463414634146341,0.9452490922294844,outputs\20260503_第5次实验\template_ablation_paper_fair
+template_ablation,stratified_random,paper_fair,0,0,42,dtw_multi_quantile_K4,46179,121,0.9658536585365853,0.9649930714085465,0.9512195121951219,0.9515237494745691,outputs\20260503_第5次实验\template_ablation_paper_fair
+template_ablation,stratified_random,paper_fair,0,0,42,dtw_random_pool_K2,40803,77,0.9365853658536586,0.9342948456085546,0.9073170731707317,0.8918369418566033,outputs\20260503_第5次实验\template_ablation_paper_fair

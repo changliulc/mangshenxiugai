@@ -1,0 +1,41 @@
+\vspace {10pt}
+\addvspace {10.0pt}
+\addvspace {10.0pt}
+\contentsline {figure}{\numberline {2.1}{\ignorespaces 车辆经过地磁传感器时的磁场扰动示意图}}{10}{figure.caption.14}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces 三轴原始磁场慢漂移示意}}{11}{figure.caption.15}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces 三轴差分特征与平滑处理对比图}}{12}{figure.caption.16}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces 融合概率序列示例图}}{14}{figure.caption.17}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces 五状态有限状态机示意图}}{15}{figure.caption.18}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces 融合概率分布与阈值取值依据}}{16}{figure.caption.19}%
+\contentsline {figure}{\numberline {2.7}{\ignorespaces 连续点数参数的统计取值依据}}{16}{figure.caption.20}%
+\contentsline {figure}{\numberline {2.8}{\ignorespaces 地磁车辆检测模块硬件实物图}}{18}{figure.caption.22}%
+\contentsline {figure}{\numberline {2.9}{\ignorespaces 车辆信息检测平台总体架构图}}{19}{figure.caption.23}%
+\contentsline {figure}{\numberline {2.10}{\ignorespaces 车辆信息检测平台前端界面示例图}}{19}{figure.caption.24}%
+\addvspace {10.0pt}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces 端侧轻量车型分类基线流程图}}{26}{figure.caption.28}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces 代表性事件波形与统计特征说明图}}{27}{figure.caption.30}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces 端侧候选统计特征重要性排序图}}{29}{figure.caption.31}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces 不同速度条件下的车辆事件波形示意图}}{32}{figure.caption.32}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces 同类样本 DTW 对齐后的结构对应示意图}}{33}{figure.caption.33}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces 两处代表性采集点位及路侧单地磁节点部署现场}}{38}{figure.caption.34}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces 三类车辆事件代表性三轴扰动波形图}}{39}{figure.caption.37}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces 三类车辆事件持续时间与模值能量统计分布图}}{40}{figure.caption.38}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces 端侧特征维度 $K$ 选择结果图}}{41}{figure.caption.39}%
+\contentsline {figure}{\numberline {3.10}{\ignorespaces 多模板数量 $K_{\mathrm {MT}}$ 选择结果图}}{43}{figure.caption.42}%
+\contentsline {figure}{\numberline {3.11}{\ignorespaces 线性定长卷积网络训练收敛曲线图}}{43}{figure.caption.43}%
+\contentsline {figure}{\numberline {3.12}{\ignorespaces 离线链路混淆矩阵对比图}}{44}{figure.caption.45}%
+\addvspace {10.0pt}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces 道路侧停车与占用检测场景示意图}}{50}{figure.caption.50}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces 车辆通过事件与停车事件信号对比图}}{51}{figure.caption.51}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces 基于信号稳定点的停车与占用检测总体流程图}}{53}{figure.caption.52}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces 典型停车事件中稳定窗双判据与连续门控示意图}}{55}{figure.caption.53}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces 外层状态逻辑与连续车流退化处理流程图}}{57}{figure.caption.54}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces $T_{\mathrm {seek}}$ 参数扫描结果图}}{60}{figure.caption.55}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces 实验场景道路侧布设实景图}}{61}{figure.caption.57}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces A类工况代表性 $B_x$ 通道波形示例}}{62}{figure.caption.58}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces B类工况代表性 $B_x$ 通道波形示例}}{63}{figure.caption.59}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces C类工况代表性 $B_x$ 通道波形示例}}{63}{figure.caption.60}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces D类工况代表性 $B_x$ 通道波形示例}}{63}{figure.caption.61}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces 不同方法在各工况上的 $F_1$ 对比图}}{66}{figure.caption.64}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces C 类数据中稳定点可得率与退化分支使用率图}}{68}{figure.caption.65}%
+\addvspace {10.0pt}

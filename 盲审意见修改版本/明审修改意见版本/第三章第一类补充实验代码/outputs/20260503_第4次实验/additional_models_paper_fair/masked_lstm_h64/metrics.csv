@@ -1,0 +1,2 @@
+﻿experiment,validation_type,preset,oversample,run_id,seed,model,param_count,best_epoch,val_acc,val_macro_f1,test_acc,test_macro_f1
+additional_models,stratified_random,paper_fair,0,0,42,masked_lstm_h64,51395,200,0.9219512195121952,0.9210539091794393,0.9024390243902439,0.8962917633955313

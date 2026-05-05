@@ -1,0 +1,10 @@
+﻿experiment,validation_type,run_id,seed,model,true_class,pred_small,pred_medium,pred_large
+baselines_lstm,stratified_random,0,42,fixed_cnn_1d,0,93,10,0
+baselines_lstm,stratified_random,0,42,fixed_cnn_1d,1,1,58,2
+baselines_lstm,stratified_random,0,42,fixed_cnn_1d,2,0,3,38
+baselines_lstm,stratified_random,0,42,lstm_h64,0,89,14,0
+baselines_lstm,stratified_random,0,42,lstm_h64,1,13,45,3
+baselines_lstm,stratified_random,0,42,lstm_h64,2,0,9,32
+baselines_lstm,stratified_random,0,42,lstm_h32,0,96,7,0
+baselines_lstm,stratified_random,0,42,lstm_h32,1,18,37,6
+baselines_lstm,stratified_random,0,42,lstm_h32,2,0,15,26

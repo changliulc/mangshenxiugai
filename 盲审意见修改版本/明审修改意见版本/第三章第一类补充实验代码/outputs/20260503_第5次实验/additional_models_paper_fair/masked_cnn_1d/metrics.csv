@@ -1,0 +1,2 @@
+﻿experiment,validation_type,preset,oversample,run_id,seed,model,param_count,best_epoch,val_acc,val_macro_f1,test_acc,test_macro_f1
+additional_models,stratified_random,paper_fair,0,0,42,masked_cnn_1d,36323,35,0.9219512195121952,0.9168316831683168,0.8975609756097561,0.884978742810068

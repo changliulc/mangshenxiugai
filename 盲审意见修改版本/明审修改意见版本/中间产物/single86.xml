@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler-25.02.0" version="25.02.0">
+<page number="86" position="absolute" top="0" left="0" height="1262" width="892">
+	<fontspec id="0" size="16" family="IHNCPH+SimSun" color="#000000"/>
+	<fontspec id="1" size="18" family="IHNCPH+SimSun" color="#000000"/>
+	<fontspec id="2" size="18" family="AWJUKL+TimesNewRomanPSMT" color="#000000"/>
+	<fontspec id="3" size="18" family="XCATTL+CambriaMath" color="#000000"/>
+	<fontspec id="4" size="13" family="XCATTL+CambriaMath" color="#000000"/>
+	<fontspec id="5" size="16" family="AWJUKL+TimesNewRomanPSMT" color="#000000"/>
+	<fontspec id="6" size="16" family="XCATTL+CambriaMath" color="#000000"/>
+	<fontspec id="7" size="10" family="XCATTL+CambriaMath" color="#000000"/>
+	<fontspec id="8" size="14" family="AWJUKL+TimesNewRomanPSMT" color="#000000"/>
+<image top="717" left="225" width="501" height="316" src="single86-86_1.png"/>
+<text top="95" left="326" width="221" height="16" font="0">西安电子科技大学硕士学位论文</text>
+<text top="136" left="106" width="18" height="18" font="1">和</text>
+<text top="139" left="129" width="46" height="16" font="2">96.0%</text>
+<text top="136" left="175" width="144" height="18" font="1">。与基线一相比，</text>
+<text top="137" left="319" width="11" height="18" font="3">𝐹</text>
+<text top="145" left="327" width="8" height="13" font="4">1</text>
+<text top="136" left="340" width="54" height="18" font="1">提高了</text>
+<text top="139" left="398" width="23" height="16" font="2">5.3</text>
+<text top="136" left="425" width="216" height="18" font="1">个百分点；与基线二相比，</text>
+<text top="137" left="641" width="11" height="18" font="3">𝐹</text>
+<text top="145" left="649" width="8" height="13" font="4">1</text>
+<text top="136" left="662" width="54" height="18" font="1">提高了</text>
+<text top="139" left="720" width="23" height="16" font="2">9.1</text>
+<text top="136" left="747" width="18" height="18" font="1">个</text>
+<text top="166" left="106" width="72" height="18" font="1">百分点。</text>
+<text top="196" left="142" width="199" height="18" font="1">分工况来看，本文方法在</text>
+<text top="199" left="346" width="13" height="16" font="2">A</text>
+<text top="196" left="359" width="18" height="18" font="1">、</text>
+<text top="199" left="377" width="12" height="16" font="2">B</text>
+<text top="196" left="389" width="18" height="18" font="1">、</text>
+<text top="199" left="407" width="12" height="16" font="2">C</text>
+<text top="196" left="419" width="18" height="18" font="1">、</text>
+<text top="199" left="437" width="13" height="16" font="2">D</text>
+<text top="196" left="454" width="108" height="18" font="1">四类工况上的</text>
+<text top="197" left="567" width="11" height="18" font="3">𝐹</text>
+<text top="205" left="576" width="8" height="13" font="4">1</text>
+<text top="196" left="589" width="54" height="18" font="1">分别为</text>
+<text top="199" left="648" width="46" height="16" font="2">98.2%</text>
+<text top="196" left="694" width="18" height="18" font="1">、</text>
+<text top="199" left="712" width="46" height="16" font="2">96.5%</text>
+<text top="196" left="759" width="18" height="18" font="1">、</text>
+<text top="229" left="106" width="46" height="16" font="2">91.5%</text>
+<text top="226" left="158" width="18" height="18" font="1">和</text>
+<text top="229" left="181" width="46" height="16" font="2">98.9%</text>
+<text top="226" left="227" width="72" height="18" font="1">。其中，</text>
+<text top="229" left="299" width="12" height="16" font="2">C</text>
+<text top="226" left="316" width="363" height="18" font="1">类的性能提升最为明显，较两类基线均提高了</text>
+<text top="229" left="684" width="23" height="16" font="2">8.9</text>
+<text top="226" left="711" width="54" height="18" font="1">个百分</text>
+<text top="256" left="106" width="232" height="18" font="1">点，是整体增益的主要来源。</text>
+<text top="259" left="336" width="13" height="16" font="2">D</text>
+<text top="256" left="354" width="412" height="18" font="1">类在慢漂移背景下也表现出明显优势，较基线二提高</text>
+<text top="288" left="106" width="32" height="16" font="2">14.6</text>
+<text top="285" left="142" width="197" height="18" font="1">个百分点，较基线一提高</text>
+<text top="288" left="344" width="23" height="16" font="2">2.4</text>
+<text top="285" left="370" width="395" height="18" font="1">个百分点，说明动态参考维护与更新门控能够有效</text>
+<text top="315" left="106" width="288" height="18" font="1">提升长时运行条件下的判定稳定性。</text>
+<text top="318" left="394" width="13" height="16" font="2">A</text>
+<text top="315" left="412" width="36" height="18" font="1">类和</text>
+<text top="318" left="453" width="12" height="16" font="2">B</text>
+<text top="315" left="469" width="180" height="18" font="1">类相较各自最佳基线的</text>
+<text top="317" left="654" width="11" height="18" font="3">𝐹</text>
+<text top="324" left="662" width="8" height="13" font="4">1</text>
+<text top="315" left="675" width="90" height="18" font="1">也分别提高</text>
+<text top="345" left="106" width="18" height="18" font="1">了</text>
+<text top="348" left="129" width="23" height="16" font="2">5.9</text>
+<text top="345" left="156" width="90" height="18" font="1">个百分点和</text>
+<text top="348" left="251" width="23" height="16" font="2">3.6</text>
+<text top="345" left="278" width="487" height="18" font="1">个百分点，说明所提方法在一般工况下同样能够保持较好的状</text>
+<text top="375" left="106" width="416" height="18" font="1">态判定稳定性，但其更具代表性的优势仍主要体现在</text>
+<text top="378" left="527" width="12" height="16" font="2">C</text>
+<text top="375" left="544" width="108" height="18" font="1">类连续车流和</text>
+<text top="378" left="657" width="13" height="16" font="2">D</text>
+<text top="375" left="675" width="90" height="18" font="1">类慢漂移两</text>
+<text top="405" left="106" width="108" height="18" font="1">类复杂场景。</text>
+<text top="452" left="261" width="16" height="16" font="0">表</text>
+<text top="454" left="280" width="20" height="14" font="5">4.3</text>
+<text top="452" left="312" width="299" height="16" font="0">不同方法在各工况上的占用状态段判定结果</text>
+<text top="483" left="139" width="32" height="16" font="0">方法</text>
+<text top="486" left="226" width="11" height="14" font="5">A</text>
+<text top="483" left="241" width="32" height="16" font="0">类（</text>
+<text top="486" left="273" width="13" height="14" font="5">%</text>
+<text top="483" left="286" width="16" height="16" font="0">）</text>
+<text top="486" left="339" width="11" height="14" font="5">B</text>
+<text top="483" left="353" width="32" height="16" font="0">类（</text>
+<text top="486" left="385" width="13" height="14" font="5">%</text>
+<text top="483" left="398" width="16" height="16" font="0">）</text>
+<text top="486" left="451" width="11" height="14" font="5">C</text>
+<text top="483" left="466" width="32" height="16" font="0">类（</text>
+<text top="486" left="497" width="13" height="14" font="5">%</text>
+<text top="483" left="510" width="16" height="16" font="0">）</text>
+<text top="486" left="563" width="11" height="14" font="5">D</text>
+<text top="483" left="579" width="32" height="16" font="0">类（</text>
+<text top="486" left="610" width="13" height="14" font="5">%</text>
+<text top="483" left="623" width="16" height="16" font="0">）</text>
+<text top="483" left="660" width="79" height="16" font="0">全部工况（</text>
+<text top="486" left="739" width="13" height="14" font="5">%</text>
+<text top="483" left="752" width="16" height="16" font="0">）</text>
+<text top="518" left="123" width="63" height="16" font="0">本文方法</text>
+<text top="521" left="210" width="99" height="14" font="5">100.0/96.4/98.2</text>
+<text top="521" left="326" width="91" height="14" font="5">97.6/95.3/96.5</text>
+<text top="521" left="439" width="91" height="14" font="5">91.5/91.5/91.5</text>
+<text top="521" left="547" width="99" height="14" font="5">100.0/97.7/98.9</text>
+<text top="521" left="663" width="91" height="14" font="5">96.9/95.1/96.0</text>
+<text top="544" left="131" width="47" height="16" font="0">基线一</text>
+<text top="547" left="210" width="99" height="14" font="5">100.0/85.7/92.3</text>
+<text top="547" left="326" width="91" height="14" font="5">95.1/90.7/92.9</text>
+<text top="547" left="439" width="91" height="14" font="5">84.4/80.9/82.6</text>
+<text top="547" left="547" width="99" height="14" font="5">100.0/93.2/96.5</text>
+<text top="547" left="663" width="91" height="14" font="5">94.0/87.7/90.7</text>
+<text top="570" left="131" width="47" height="16" font="0">基线二</text>
+<text top="572" left="210" width="212" height="14" font="5">100.0/85.7/92.3 100.0/83.7/91.1</text>
+<text top="572" left="439" width="91" height="14" font="5">84.4/80.9/82.6</text>
+<text top="572" left="551" width="91" height="14" font="5">89.7/79.5/84.3</text>
+<text top="572" left="663" width="91" height="14" font="5">92.4/82.1/86.9</text>
+<text top="638" left="142" width="440" height="18" font="1">为更直观比较不同方法在各工况下的综合判定效果，图</text>
+<text top="641" left="587" width="32" height="16" font="2"><a href="single86.html#86">4.12</a></text>
+<text top="638" left="619" width="146" height="18" font="1"><a href="single86.html#86">进</a>一步展示了各方</text>
+<text top="668" left="106" width="144" height="18" font="1">法在不同工况下的</text>
+<text top="669" left="255" width="11" height="18" font="3">𝐹</text>
+<text top="677" left="263" width="8" height="13" font="4">1</text>
+<text top="668" left="276" width="90" height="18" font="1">变化情况。</text>
+<text top="1041" left="293" width="16" height="16" font="0">图</text>
+<text top="1044" left="312" width="28" height="14" font="5">4.12</text>
+<text top="1041" left="352" width="158" height="16" font="0">不同方法在各工况上的</text>
+<text top="1042" left="513" width="10" height="16" font="6">𝐹</text>
+<text top="1050" left="521" width="6" height="10" font="7">1</text>
+<text top="1041" left="532" width="47" height="16" font="0">对比图</text>
+<text top="1091" left="142" width="13" height="16" font="2">A</text>
+<text top="1088" left="160" width="401" height="18" font="1">类正常单车停靠场景中，本文方法在当前样本上的</text>
+<text top="1091" left="566" width="67" height="16" font="2">Precision</text>
+<text top="1088" left="633" width="18" height="18" font="1">、</text>
+<text top="1091" left="651" width="46" height="16" font="2">Recall</text>
+<text top="1088" left="702" width="18" height="18" font="1">和</text>
+<text top="1090" left="725" width="11" height="18" font="3">𝐹</text>
+<text top="1097" left="734" width="8" height="13" font="4">1</text>
+<text top="1088" left="747" width="18" height="18" font="1">分</text>
+<text top="1118" left="106" width="36" height="18" font="1">别为</text>
+<text top="1121" left="147" width="55" height="16" font="2">100.0%</text>
+<text top="1118" left="203" width="18" height="18" font="1">、</text>
+<text top="1121" left="221" width="46" height="16" font="2">96.4%</text>
+<text top="1118" left="272" width="18" height="18" font="1">和</text>
+<text top="1121" left="295" width="46" height="16" font="2">98.2%</text>
+<text top="1118" left="342" width="109" height="18" font="1">，两类基线的</text>
+<text top="1119" left="456" width="11" height="18" font="3">𝐹</text>
+<text top="1127" left="464" width="8" height="13" font="4">1</text>
+<text top="1118" left="478" width="36" height="18" font="1">均为</text>
+<text top="1121" left="519" width="46" height="16" font="2">92.3%</text>
+<text top="1118" left="565" width="200" height="18" font="1">。这说明当停靠前后能够</text>
+<text top="1179" left="429" width="14" height="12" font="8">64</text>
+</page>
+<outline>
+<item page="7">摘要</item>
+<item page="9">ABSTRACT</item>
+<item page="11">插图索引</item>
+<item page="13">表格索引</item>
+<item page="15">符号对照表</item>
+<item page="19">缩略语对照表</item>
+<item page="21">目录</item>
+<item page="23">第一章  绪论</item>
+<outline>
+<item page="23">1.1 研究背景及研究意义</item>
+<item page="24">1.2 国内外研究现状</item>
+<outline>
+<item page="24">1.2.1 单地磁车辆事件检测研究现状</item>
+<item page="25">1.2.2 单地磁车型分类研究现状</item>
+<item page="26">1.2.3 单地磁停车与占用检测研究现状</item>
+</outline>
+<item page="28">1.3 研究内容及章节安排</item>
+<outline>
+<item page="28">1.3.1 研究内容</item>
+<item page="28">1.3.2 章节安排</item>
+</outline>
+</outline>
+<item page="31">第二章  地磁车辆事件检测原理与系统设计</item>
+<outline>
+<item page="31">2.1 引言</item>
+<item page="31">2.2 地磁车辆检测基本原理</item>
+<outline>
+<item page="31">2.2.1 车辆检测算法基本原理</item>
+<item page="34">2.2.2 基于一阶差分的状态机车辆检测算法</item>
+</outline>
+<item page="39">2.3 地磁车辆检测系统</item>
+<outline>
+<item page="39">2.3.1 地磁车辆检测模块</item>
+<item page="40">2.3.2 车辆信息检测平台</item>
+</outline>
+<item page="42">2.4 本章小结</item>
+</outline>
+<item page="43">第三章  基于单地磁传感器的车型分类方法</item>
+<outline>
+<item page="43">3.1 引言</item>
+<item page="43">3.2 车型分类任务定义与样本表示</item>
+<outline>
+<item page="43">3.2.1 标签定义与标注口径</item>
+<item page="44">3.2.2 事件级样本与输入表示</item>
+</outline>
+<item page="45">3.3 端侧轻量车型分类方法</item>
+<outline>
+<item page="46">3.3.1 候选统计特征构造与筛选</item>
+<item page="50">3.3.2 轻量分类器设计</item>
+</outline>
+<item page="51">3.4 基于时间规整的离线增强分类方法</item>
+<outline>
+<item page="51">3.4.1 车速变化与线性定长卷积网络基线</item>
+<item page="54">3.4.2 基于动态时间规整的对齐增强方法</item>
+</outline>
+<item page="58">3.5 实验结果与分析</item>
+<outline>
+<item page="58">3.5.1 实验场景、数据集与评价指标</item>
+<item page="60">3.5.2 参数选择与实验设置</item>
+<item page="63">3.5.3 总体结果分析</item>
+<item page="65">3.5.4 消融实验与讨论</item>
+</outline>
+<item page="67">3.6 本章小结</item>
+</outline>
+<item page="69">第四章  基于信号稳定点的道路停车与占用检测方法</item>
+<outline>
+<item page="69">4.1 引言</item>
+<item page="70">4.2 场景定义与信号特性</item>
+<outline>
+<item page="70">4.2.1 场景特性与信号分析</item>
+<item page="71">4.2.2 任务定义与状态口径</item>
+</outline>
+<item page="72">4.3 基于稳定点的停车与占用判定方法</item>
+<outline>
+<item page="72">4.3.1 稳定窗判定与稳定点提取</item>
+<item page="75">4.3.2 动态参考与状态判定机制</item>
+</outline>
+<item page="77">4.4 鲁棒性策略与参数确定</item>
+<outline>
+<item page="77">4.4.1 漂移抑制、伪稳态抑制与连续车流处理</item>
+<item page="79">4.4.2 参数确定与全局配置</item>
+</outline>
+<item page="81">4.5 实验结果与分析</item>
+<outline>
+<item page="81">4.5.1 实验场景、工况分组与评价指标</item>
+<item page="85">4.5.2 对比结果分析</item>
+<item page="88">4.5.3 消融实验与结果讨论</item>
+</outline>
+<item page="90">4.6 本章小结</item>
+</outline>
+<item page="91">第五章  总结与展望</item>
+<item page="93">参考文献</item>
+<item page="97">作者简介</item>
+</outline>
+</pdf2xml>

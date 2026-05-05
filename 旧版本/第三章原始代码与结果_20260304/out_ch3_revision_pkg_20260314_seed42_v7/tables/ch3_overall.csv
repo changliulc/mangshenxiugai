@@ -1,0 +1,4 @@
+﻿method,test_acc,test_f1
+端侧 Softmax（扩展搜索上限）,89.76\%,88.39\%
+离线 CNN（线性定长）,90.73\%,89.97\%
+DTW-MultiTemplate(K=2)+CNN（本文方法）,96.10\%,95.80\%

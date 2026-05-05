@@ -1,0 +1,6 @@
+﻿feature,role
+x_absarea,X向累计扰动强度
+b_energy,合成扰动能量
+z_max,Z向主导峰值
+x_max,X向主导峰值
+zc_z,Z向过零结构

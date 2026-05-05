@@ -1,0 +1,33 @@
+{
+  "created_at": "2026-04-30 18:17:12",
+  "workspace": "D:\\xidian_Master\\研究生论文\\毕业论文\\xduts-main",
+  "purpose": "AI-readable package for the pre-revision thesis PDF and blind-review comments.",
+  "sources": [
+    {
+      "source_id": "thesis_before_pdf",
+      "source_file": "D:\\xidian_Master\\研究生论文\\毕业论文\\xduts-main\\明审版本\\xdupgthesis_template_lc.pdf",
+      "pdfinfo_file": "01_thesis_before_pdfinfo.txt",
+      "layout_text_file": "01_thesis_before_full_layout.txt",
+      "plain_text_file": "01_thesis_before_full_plain.txt",
+      "page_jsonl_file": "01_thesis_before_pages.jsonl",
+      "page_records": 98
+    },
+    {
+      "source_id": "review_return_pdf",
+      "source_file": "D:\\xidian_Master\\研究生论文\\毕业论文\\xduts-main\\刘畅_23011211000_面向智慧交通的车型分类及停车占用检测方法研究_1.pdf",
+      "pdfinfo_file": "02_review_return_pdf_pdfinfo.txt",
+      "layout_text_file": "02_review_return_pdf_full_layout.txt",
+      "plain_text_file": "02_review_return_pdf_full_plain.txt",
+      "page_jsonl_file": "02_review_return_pdf_pages.jsonl",
+      "page_records": 9
+    },
+    {
+      "source_id": "review_comment_txt",
+      "source_file": "D:\\xidian_Master\\研究生论文\\毕业论文\\xduts-main\\修改意见.txt",
+      "encoding": "utf-8-sig",
+      "markdown_file": "03_review_comments_txt_utf8.md",
+      "section_jsonl_file": "03_review_comments_txt_sections.jsonl",
+      "section_records": 22
+    }
+  ]
+}

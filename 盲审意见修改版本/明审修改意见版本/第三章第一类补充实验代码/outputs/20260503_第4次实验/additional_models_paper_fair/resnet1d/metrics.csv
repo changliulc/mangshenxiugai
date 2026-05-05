@@ -1,0 +1,2 @@
+﻿experiment,validation_type,preset,oversample,run_id,seed,model,param_count,best_epoch,val_acc,val_macro_f1,test_acc,test_macro_f1
+additional_models,stratified_random,paper_fair,0,0,42,resnet1d,111171,44,0.9804878048780488,0.982598546341981,0.975609756097561,0.9734552845528456

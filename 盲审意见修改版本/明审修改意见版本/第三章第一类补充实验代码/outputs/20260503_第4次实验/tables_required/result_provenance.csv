@@ -1,0 +1,7 @@
+﻿result_dir,experiment,validation_type,preset,oversample,L,n_runs,mat_path
+outputs\20260503_第4次实验\additional_models_paper_fair\gru_h64,additional_models,stratified_random,paper_fair,0,176,1,D:\xidian_Master\研究生论文\毕业论文\xduts-main\非核心文件\绘图\第三章\20260304\processedVehicleData_3class_REAL (2).mat
+outputs\20260503_第4次实验\additional_models_paper_fair\masked_cnn_1d,additional_models,stratified_random,paper_fair,0,176,1,D:\xidian_Master\研究生论文\毕业论文\xduts-main\非核心文件\绘图\第三章\20260304\processedVehicleData_3class_REAL (2).mat
+outputs\20260503_第4次实验\additional_models_paper_fair\masked_lstm_h64,additional_models,stratified_random,paper_fair,0,176,1,D:\xidian_Master\研究生论文\毕业论文\xduts-main\非核心文件\绘图\第三章\20260304\processedVehicleData_3class_REAL (2).mat
+outputs\20260503_第4次实验\additional_models_paper_fair\resnet1d,additional_models,stratified_random,paper_fair,0,176,1,D:\xidian_Master\研究生论文\毕业论文\xduts-main\非核心文件\绘图\第三章\20260304\processedVehicleData_3class_REAL (2).mat
+outputs\20260503_第4次实验\additional_models_paper_fair\transformer_d64,additional_models,stratified_random,paper_fair,0,176,1,D:\xidian_Master\研究生论文\毕业论文\xduts-main\非核心文件\绘图\第三章\20260304\processedVehicleData_3class_REAL (2).mat
+outputs\20260503_第4次实验\template_ablation_paper_fair,template_ablation,stratified_random,paper_fair,0,176,,D:\xidian_Master\研究生论文\毕业论文\xduts-main\非核心文件\绘图\第三章\20260304\processedVehicleData_3class_REAL (2).mat

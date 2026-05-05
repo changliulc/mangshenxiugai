@@ -1,0 +1,4 @@
+﻿experiment,validation_type,run_id,seed,model,class_id,class_name,precision,recall,f1,support
+baselines_lstm,stratified_random,0,42,fixed_cnn_1d,0,small,0.9117647058823529,0.9029126213592233,0.9073170731707318,103
+baselines_lstm,stratified_random,0,42,fixed_cnn_1d,1,medium,0.7230769230769231,0.7704918032786885,0.746031746031746,61
+baselines_lstm,stratified_random,0,42,fixed_cnn_1d,2,large,0.868421052631579,0.8048780487804879,0.8354430379746836,41

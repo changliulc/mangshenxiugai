@@ -1,0 +1,4 @@
+﻿experiment,validation_type,run_id,seed,model,class_id,class_name,precision,recall,f1,support
+additional_models,stratified_random,0,42,resnet1d,0,small,0.9901960784313726,0.9805825242718447,0.9853658536585367,103
+additional_models,stratified_random,0,42,resnet1d,1,medium,0.9375,0.9836065573770492,0.96,61
+additional_models,stratified_random,0,42,resnet1d,2,large,1.0,0.9512195121951219,0.975,41

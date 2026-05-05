@@ -1,0 +1,88 @@
+% !TeX root = ../xdupgthesis_template_lc.tex
+
+$\mathbf{B}(k)$ & 第 $k$ 个采样时刻的三轴地磁观测向量 \\
+$B_x(k),\,B_y(k),\,B_z(k)$ & 第 $k$ 个采样时刻 $x$、$y$、$z$ 三轴磁场分量 \\
+$\mathbf{r}$ & 传感器与等效磁偶极子之间的距离矢量 \\
+$r$ & 距离矢量 $\mathbf{r}$ 的模 \\
+$\hat{\mathbf{r}}$ & 距离矢量 $\mathbf{r}$ 的单位矢量 \\
+$\mathbf{m}$ & 等效磁偶极子的磁矩向量 \\
+$\mu_{0}$ & 真空磁导率 \\
+$\mathbf{B}_{\mathrm{dip}}(\mathbf{r})$ & 磁偶极子在位置 $\mathbf{r}$ 处产生的理论磁场 \\
+$\mathbf{B}_{\mathrm{bg}}(k)$ & 背景磁场分量 \\
+$\mathbf{B}_{\mathrm{veh}}(k)$ & 车辆扰动分量 \\
+$\mathbf{e}(k)$ & 测量噪声及外界干扰向量 \\
+$f_s$ & 地磁传感器采样频率 \\
+$k_{in}$ & 事件起始边界索引 \\
+$k_{out}$ & 事件结束边界索引 \\
+$N_{\mathrm{evt}}$ & 事件持续点数 \\
+$T_{\mathrm{evt}}$ & 事件持续时间 \\
+$N_{\mathrm{bg}}$ & 背景统计窗口长度 \\
+$D_l(k)$ & 第 $l$ 轴磁场序列的一阶差分值，$l\in\{x,y,z\}$ \\
+$\overline{D}_l(k)$ & 第 $l$ 轴一阶差分信号的平滑结果 \\
+$L_s$ & 差分平滑窗口长度 \\
+$\hat{\mu}_{l,0}$ & 第 $l$ 轴无车背景差分均值的估计值 \\
+$\hat{\sigma}_{l,0}$ & 第 $l$ 轴无车背景差分标准差的估计值 \\
+$p_{0,l}(k)$ & 第 $l$ 轴背景一致性得分 \\
+$p_{1,l}(k)$ & 第 $l$ 轴扰动得分 \\
+$P_{car}(k)$ & 融合有车概率 \\
+$\rho_0,\,\rho_1$ & 三轴概率融合的相关性修正系数 \\
+$\theta_{arr}$ & 到达检测概率阈值 \\
+$\theta_{lea}$ & 离开检测概率阈值 \\
+$N_{arr}$ & 到达连续计数阈值 \\
+$N_{lea}$ & 离开检测连续计数阈值 \\
+$n_{arr}(k)$ & 到达条件连续计数变量 \\
+$n_{lea}(k)$ & 离开条件连续计数变量 \\
+$T_d$ & 防断裂延时点数 \\
+$\mathbf{B}_0$ & 事件片段的基线估计向量 \\
+$N_{\mathrm{pre}}$ & 到达前基线估计窗口长度 \\
+$\Delta\mathbf{B}(n)$ & 基线扣除后的三轴扰动向量 \\
+$\Delta B_x(n),\,\Delta B_y(n),\,\Delta B_z(n)$ & 基线扣除后的三轴扰动分量 \\
+$b(n)$ & 三轴扰动向量的模值序列 \\
+$L_{\mathrm{uni}}$ & 离线链路中的统一长度 \\
+$b_{\max}$ & 模值序列峰值 \\
+$E_b$ & 模值序列能量 \\
+$A_x$ & $x$ 轴扰动绝对面积 \\
+$A_z$ & $z$ 轴扰动绝对面积 \\
+$K$ & 端侧轻量分类中保留的特征维度 \\
+$\mathbf{x}(n)$ & 四通道原始输入序列 \\
+$\mathbf{X}$ & 线性定长映射结果 \\
+$\alpha_{\ell}$ & 线性插值系数 \\
+$\tilde{\mathbf{X}}$ & 标准化后的输入张量 \\
+$w_R$ & Sakoe 与 Chiba 相对窗口比例 \\
+$w$ & DTW 窗口半径 \\
+$\lambda_{\mathrm{step}}$ & DTW 路径搜索中的步进惩罚项 \\
+$K_{\mathrm{MT}}$ & DTW 多模板增强方法中的每类模板数量 \\
+$q_k$ & 多模板选取中的持续时间分位点 \\
+$\widetilde{\mathbf{B}}(k)$ & 预处理后的三轴地磁序列 \\
+$o(k)$ & 离散时刻 $k$ 的占用状态 \\
+$L$ & 稳定窗长度 \\
+$\mathcal{W}(k)$ & 以采样点 $k$ 结束的稳定窗 \\
+$\overline{\mathbf{B}}(k)$ & 稳定窗均值向量 \\
+$\boldsymbol{\sigma}$ & 三轴噪声标准差向量 \\
+$\boldsymbol{\omega}$ & 归一化权重向量 \\
+$\mathbf{r}(k)$ & 采样点 $k$ 对应稳定窗内的三轴极差向量 \\
+$\mathbf{m}(k)$ & 采样点 $k$ 对应相邻稳定窗之间的均值差向量 \\
+$R(k)$ & 窗内波动指标 \\
+$M(k)$ & 窗间水平差指标 \\
+$R_{\mathrm{th}}$ & 窗内波动阈值 \\
+$M_{\mathrm{th}}$ & 窗间水平差阈值 \\
+$N_{\mathrm{stable}}$ & 连续稳定窗门控门限 \\
+$\mathbf{S}_{\mathrm{pre}}$ & 环境参考稳定点 \\
+$\mathbf{S}_{\mathrm{post}}$ & 占用参考稳定点 \\
+$\mathbf{S}_{\mathrm{new}}$ & 新稳定点 \\
+$\Delta\mathbf{S}$ & 新稳定点相对环境参考的漂移向量 \\
+$D_{\mathrm{env}}$ & 新稳定点到环境参考的距离 \\
+$D_{\mathrm{occ}}$ & 当前占用参考相对环境参考的占用偏移量 \\
+$\mathrm{dist}$ & 新稳定点到当前占用参考的相似性距离 \\
+$D_{\mathrm{th}}$ & 停车漂移阈值 \\
+$D_{\mathrm{free}}$ & 回归环境阈值 \\
+$\mathrm{dist}_{\mathrm{th}}$ & 占用维持相似性阈值 \\
+$\alpha$ & 环境参考更新率 \\
+$D_{\mathrm{upd}}$ & 更新门控阈值 \\
+$\lambda_{\mathrm{occ}}$ & 占用参考更新率 \\
+$c_{\mathrm{th}}$ & 一致性确认门限 \\
+$T_{\mathrm{seek}}$ & 寻稳超时时长 \\
+$L_{\mathrm{fix}}$ & 退化分支固定窗长度 \\
+$T_{\min}$ & 最小时长阈值 \\
+$\theta_{\mathrm{IoU}}$ & IoU 匹配阈值 \\
+

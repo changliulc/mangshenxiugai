@@ -1,0 +1,41 @@
+{
+  "seed": 42,
+  "mat_path": "D:\\xidian_Master\\研究生论文\\毕业论文\\xduts-main\\绘图\\第三章\\20260304\\processedVehicleData_3class_REAL (2).mat",
+  "K_grid": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "selected_candidate": {
+    "K": 7,
+    "lambda": 0.01,
+    "selected_idx": [
+      9,
+      31,
+      20,
+      4,
+      42,
+      1,
+      29
+    ],
+    "selected_names": [
+      "x_absarea",
+      "b_energy",
+      "z_max",
+      "x_max",
+      "zc_z",
+      "len_T_sec_fs50",
+      "b_min"
+    ],
+    "val_acc": 0.8878048780487805,
+    "val_f1": 0.8756763283872825
+  },
+  "selected_softmax_test": {
+    "acc": 0.8975609756097561,
+    "f1": 0.8838910551697721
+  },
+  "decision_rank": 1
+}

@@ -1,0 +1,4 @@
+﻿experiment,validation_type,run_id,seed,model,true_class,pred_small,pred_medium,pred_large
+additional_models,stratified_random,0,42,gru_h64,0,93,10,0
+additional_models,stratified_random,0,42,gru_h64,1,6,48,7
+additional_models,stratified_random,0,42,gru_h64,2,0,5,36

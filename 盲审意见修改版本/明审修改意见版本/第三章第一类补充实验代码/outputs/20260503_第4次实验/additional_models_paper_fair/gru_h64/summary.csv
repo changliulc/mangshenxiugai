@@ -1,0 +1,2 @@
+﻿model,runs,param_count,test_acc_mean,test_acc_std,test_macro_f1_mean,test_macro_f1_std,val_macro_f1_mean,val_macro_f1_std
+gru_h64,1,38595,0.8682926829268293,0.0,0.8535916895930177,0.0,0.9342948456085546,0.0

@@ -1,0 +1,3 @@
+﻿result_dir,experiment,validation_type,preset,oversample,L,n_runs,mat_path
+outputs\20260503_第1次实验\baselines_paper_fair,baselines_lstm,stratified_random,paper_fair,0,176,1,D:\xidian_Master\研究生论文\毕业论文\xduts-main\非核心文件\绘图\第三章\20260304\processedVehicleData_3class_REAL (2).mat
+outputs\20260503_第1次实验\source_group_paper_fair,source_group_validation,source_group,paper_fair,0,176,1,D:\xidian_Master\研究生论文\毕业论文\xduts-main\非核心文件\绘图\第三章\20260304\processedVehicleData_3class_REAL (2).mat

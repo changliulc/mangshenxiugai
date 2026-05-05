@@ -1,0 +1,10 @@
+﻿experiment,validation_type,run_id,seed,model,true_class,pred_small,pred_medium,pred_large
+source_group_validation,source_group,0,42,fixed_cnn_1d,0,97,6,0
+source_group_validation,source_group,0,42,fixed_cnn_1d,1,4,56,1
+source_group_validation,source_group,0,42,fixed_cnn_1d,2,0,5,36
+source_group_validation,source_group,0,42,lstm_h64,0,90,13,0
+source_group_validation,source_group,0,42,lstm_h64,1,17,35,9
+source_group_validation,source_group,0,42,lstm_h64,2,0,11,30
+source_group_validation,source_group,0,42,lstm_h32,0,93,10,0
+source_group_validation,source_group,0,42,lstm_h32,1,12,46,3
+source_group_validation,source_group,0,42,lstm_h32,2,0,9,32

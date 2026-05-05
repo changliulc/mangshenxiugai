@@ -1,0 +1,9 @@
+{
+  "baseline_summary": "D:\\xidian_Master\\研究生论文\\毕业论文\\xduts-main\\绘图\\第三章\\20260304\\out_ch3_lift_r2_20260314_seed42\\results\\summary.json",
+  "dtw_summary": "D:\\xidian_Master\\研究生论文\\毕业论文\\xduts-main\\绘图\\第三章\\20260304\\out_ch3_dtw_tune_kle4_20260314_seed42\\results\\summary.json",
+  "mat_path": "D:\\xidian_Master\\研究生论文\\毕业论文\\xduts-main\\绘图\\第三章\\20260304\\processedVehicleData_3class_REAL (2).mat",
+  "outputs": [
+    "绘图\\第三章\\20260304\\out_confusion_preview_matlab_style_20260314_v1\\cm_cnn_baseline.png",
+    "绘图\\第三章\\20260304\\out_confusion_preview_matlab_style_20260314_v1\\cm_dtw_multi_cnn.png"
+  ]
+}

@@ -1,0 +1,4 @@
+﻿experiment,validation_type,preset,oversample,run_id,seed,model,param_count,best_epoch,val_acc,val_macro_f1,test_acc,test_macro_f1
+baselines_lstm,stratified_random,paper_fair,0,0,42,fixed_cnn_1d,36323,134,0.9317073170731708,0.9316895893279833,0.9073170731707317,0.8997428508851787
+baselines_lstm,stratified_random,paper_fair,0,0,42,lstm_h64,51395,106,0.8585365853658536,0.8534429930656345,0.8048780487804879,0.7940536463335883
+baselines_lstm,stratified_random,paper_fair,0,0,42,lstm_h32,13411,105,0.8390243902439024,0.8243316465571527,0.8,0.7792189795183061

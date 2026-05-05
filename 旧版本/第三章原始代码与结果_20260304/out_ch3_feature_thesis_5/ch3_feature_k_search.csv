@@ -1,0 +1,4 @@
+﻿K,val_macro_f1,features,features_zh
+5,0.8253195831990547,"['x_absarea', 'x_energy', 'len_T_sec_fs50', 'corr_xz', 'z_absarea']",X 轴绝对面积；X 轴能量；事件持续时间；XZ 相关系数；Z 轴绝对面积
+6,0.8322809245558566,"['x_absarea', 'x_energy', 'len_T_sec_fs50', 'corr_xz', 'z_absarea', 'x_ptp']",X 轴绝对面积；X 轴能量；事件持续时间；XZ 相关系数；Z 轴绝对面积；X 轴极差
+7,0.822801916975321,"['x_absarea', 'x_energy', 'len_T_sec_fs50', 'corr_xz', 'z_absarea', 'x_ptp', 'peak_pos_ratio']",X 轴绝对面积；X 轴能量；事件持续时间；XZ 相关系数；Z 轴绝对面积；X 轴极差；峰值位置比例

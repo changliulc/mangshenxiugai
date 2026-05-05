@@ -1,0 +1,10 @@
+﻿experiment,validation_type,run_id,seed,model,class_id,class_name,precision,recall,f1,support
+baselines_lstm,stratified_random,0,42,fixed_cnn_1d,0,small,0.9797979797979798,0.941747572815534,0.9603960396039605,103
+baselines_lstm,stratified_random,0,42,fixed_cnn_1d,1,medium,0.8507462686567164,0.9344262295081968,0.8906250000000001,61
+baselines_lstm,stratified_random,0,42,fixed_cnn_1d,2,large,0.9487179487179487,0.9024390243902439,0.9249999999999999,41
+baselines_lstm,stratified_random,0,42,lstm_h64,0,small,0.8434782608695652,0.941747572815534,0.8899082568807339,103
+baselines_lstm,stratified_random,0,42,lstm_h64,1,medium,0.7307692307692307,0.6229508196721312,0.672566371681416,61
+baselines_lstm,stratified_random,0,42,lstm_h64,2,large,0.868421052631579,0.8048780487804879,0.8354430379746836,41
+baselines_lstm,stratified_random,0,42,lstm_h32,0,small,0.8504672897196262,0.883495145631068,0.8666666666666667,103
+baselines_lstm,stratified_random,0,42,lstm_h32,1,medium,0.65625,0.6885245901639344,0.672,61
+baselines_lstm,stratified_random,0,42,lstm_h32,2,large,0.9117647058823529,0.7560975609756098,0.8266666666666665,41

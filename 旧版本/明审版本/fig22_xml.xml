@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf2xml SYSTEM "pdf2xml.dtd">
+
+<pdf2xml producer="poppler-25.02.0" version="25.02.0">
+<page number="33" position="absolute" top="0" left="0" height="1262" width="892">
+	<fontspec id="0" size="16" family="FYVYFH+SimSun" color="#000000"/>
+	<fontspec id="1" size="18" family="FYVYFH+SimSun" color="#000000"/>
+	<fontspec id="2" size="18" family="JMJTGG+TimesNewRomanPS" color="#000000"/>
+	<fontspec id="3" size="13" family="WFQSNA+TimesNewRomanPSMT" color="#000000"/>
+	<fontspec id="4" size="18" family="UZDXBB+CambriaMath" color="#000000"/>
+	<fontspec id="5" size="18" family="WFQSNA+TimesNewRomanPSMT" color="#000000"/>
+	<fontspec id="6" size="16" family="WFQSNA+TimesNewRomanPSMT" color="#000000"/>
+	<fontspec id="7" size="13" family="UZDXBB+CambriaMath" color="#000000"/>
+	<fontspec id="8" size="14" family="WFQSNA+TimesNewRomanPSMT" color="#000000"/>
+<image top="333" left="198" width="514" height="341" src="fig22_xml-33_1.png"/>
+<text top="95" left="307" width="47" height="16" font="0">第二章</text>
+<text top="95" left="370" width="236" height="16" font="0">地磁车辆事件检测原理与系统设计</text>
+<text top="136" left="128" width="162" height="18" font="1">磁环境变化均会导致</text>
+<text top="139" left="294" width="12" height="16" font="2"><b>B</b></text>
+<text top="146" left="306" width="13" height="12" font="3">bg</text>
+<text top="137" left="320" width="25" height="18" font="4">(𝑘)</text>
+<text top="136" left="349" width="393" height="18" font="1">随时间发生缓慢漂移，从而引起基线水平变化。图</text>
+<text top="139" left="746" width="23" height="16" font="5"><a href="fig22_xml.html#33">2.2</a></text>
+<text top="136" left="769" width="18" height="18" font="1"><a href="fig22_xml.html#33">给</a></text>
+<text top="166" left="128" width="659" height="18" font="1">出了三轴原始磁场序列的慢漂移示意，反映了背景磁场在长时间尺度上的缓慢变化</text>
+<text top="196" left="128" width="659" height="18" font="1">趋势。若算法依赖固定阈值或稳定基线直接进行判决，基线偏移则容易引发误触发和</text>
+<text top="226" left="128" width="659" height="18" font="1">漏检；而在车流较为密集的条件下，稳定的无车区间又往往难以获取。因此，后续车</text>
+<text top="256" left="128" width="659" height="18" font="1">辆事件检测不再依赖固定基线直接判决，而是通过三轴一阶差分突出车辆扰动、削弱</text>
+<text top="285" left="128" width="540" height="18" font="1">慢变背景的影响，并结合时序判决机制稳定定位车辆扰动事件边界。</text>
+<text top="685" left="345" width="16" height="16" font="0">图</text>
+<text top="688" left="365" width="20" height="14" font="6">2.2</text>
+<text top="685" left="396" width="173" height="16" font="0">三轴原始磁场慢漂移示意</text>
+<text top="743" left="164" width="623" height="18" font="1">此外，车辆速度变化会使扰动波形在时间轴上发生拉伸或压缩，即不同车速下的</text>
+<text top="772" left="128" width="659" height="18" font="1">波形整体形态可能相近，但持续时间并不相同。这一特性会降低固定时间窗或固定持</text>
+<text top="802" left="128" width="659" height="18" font="1">续时间阈值策略在不同速度条件下的适用性，并对后续特征提取与识别造成不利影</text>
+<text top="832" left="128" width="659" height="18" font="1">响。因此，检测阶段需要通过鲁棒特征构造与时序判决机制降低速度变化和噪声的影</text>
+<text top="862" left="128" width="576" height="18" font="1">响，在完成事件分割之后，再根据具体上层任务组织相应的事件级输入。</text>
+<text top="892" left="164" width="623" height="18" font="1">基于上述分析，本文将车辆检测视为连续磁场序列中的车辆扰动事件边界提取</text>
+<text top="922" left="128" width="444" height="18" font="1">问题。设车辆扰动进入检测判定区间时的起始采样点为</text>
+<text top="923" left="577" width="10" height="18" font="4">𝑘</text>
+<text top="931" left="587" width="14" height="13" font="7">𝑖𝑛</text>
+<text top="922" left="602" width="185" height="18" font="1">，无车判决重新成立后</text>
+<text top="952" left="128" width="148" height="18" font="1">的第一个采样点为</text>
+<text top="953" left="281" width="10" height="18" font="4">𝑘</text>
+<text top="961" left="291" width="23" height="13" font="7">𝑜𝑢𝑡</text>
+<text top="952" left="315" width="203" height="18" font="1">，则单车事件片段定义为</text>
+<text top="953" left="523" width="16" height="18" font="4">[𝑘</text>
+<text top="961" left="540" width="14" height="13" font="7">𝑖𝑛</text>
+<text top="953" left="554" width="17" height="18" font="4">, 𝑘</text>
+<text top="961" left="571" width="23" height="13" font="7">𝑜𝑢𝑡</text>
+<text top="953" left="595" width="7" height="18" font="4">)</text>
+<text top="952" left="602" width="185" height="18" font="1">。相应的事件持续点数</text>
+<text top="982" left="128" width="37" height="18" font="1">记为</text>
+<text top="983" left="171" width="13" height="18" font="4">𝑁</text>
+<text top="992" left="184" width="16" height="12" font="3">evt</text>
+<text top="983" left="211" width="33" height="18" font="4">= 𝑘</text>
+<text top="991" left="244" width="23" height="13" font="7">𝑜𝑢𝑡</text>
+<text top="983" left="273" width="29" height="18" font="4">− 𝑘</text>
+<text top="991" left="302" width="14" height="13" font="7">𝑖𝑛</text>
+<text top="982" left="317" width="225" height="18" font="1">。设地磁传感器采样频率为</text>
+<text top="983" left="548" width="10" height="18" font="4">𝑓</text>
+<text top="991" left="555" width="6" height="13" font="7">𝑠</text>
+<text top="982" left="562" width="225" height="18" font="1">，则事件持续时间可表示为</text>
+<text top="1013" left="128" width="11" height="18" font="4">𝑇</text>
+<text top="1022" left="138" width="16" height="12" font="3">evt</text>
+<text top="1013" left="160" width="32" height="18" font="4">= 𝑁</text>
+<text top="1022" left="192" width="16" height="12" font="3">evt</text>
+<text top="1013" left="209" width="19" height="18" font="4">/𝑓</text>
+<text top="1020" left="224" width="6" height="13" font="7">𝑠</text>
+<text top="1012" left="231" width="339" height="18" font="1">。若需表示事件内最后一个采样点，则记为</text>
+<text top="1013" left="574" width="10" height="18" font="4">𝑘</text>
+<text top="1020" left="584" width="26" height="13" font="7">𝑙𝑎𝑠𝑡</text>
+<text top="1013" left="616" width="28" height="18" font="4">= 𝑘</text>
+<text top="1020" left="644" width="23" height="13" font="7">𝑜𝑢𝑡</text>
+<text top="1013" left="671" width="27" height="18" font="4">− 1</text>
+<text top="1012" left="698" width="88" height="18" font="1">。上述事件</text>
+<text top="1041" left="128" width="109" height="18" font="1">片段既构成第</text>
+<text top="1044" left="242" width="9" height="16" font="5">3</text>
+<text top="1041" left="256" width="274" height="18" font="1">章车型分类的直接输入，也作为第</text>
+<text top="1044" left="535" width="9" height="16" font="5">4</text>
+<text top="1041" left="549" width="237" height="18" font="1">章停车与占用状态判定的事件</text>
+<text top="1071" left="128" width="90" height="18" font="1">触发基础。</text>
+<text top="1101" left="164" width="18" height="18" font="1">第</text>
+<text top="1104" left="187" width="36" height="16" font="5"><a href="fig22_xml.html#34">2.2.2</a></text>
+<text top="1101" left="223" width="564" height="18" font="1"><a href="fig22_xml.html#34">节</a>将在此基础上进一步给出基于三轴一阶差分的特征构造方式及有限状</text>
+<text top="1131" left="128" width="360" height="18" font="1">态机判决流程，以在复杂道路环境下稳定定位</text>
+<text top="1133" left="492" width="10" height="18" font="4">𝑘</text>
+<text top="1140" left="502" width="14" height="13" font="7">𝑖𝑛</text>
+<text top="1131" left="521" width="18" height="18" font="1">与</text>
+<text top="1133" left="544" width="10" height="18" font="4">𝑘</text>
+<text top="1140" left="553" width="23" height="13" font="7">𝑜𝑢𝑡</text>
+<text top="1131" left="577" width="18" height="18" font="1">。</text>
+<text top="1179" left="451" width="13" height="12" font="8">11</text>
+</page>
+<outline>
+<item page="7">摘要</item>
+<item page="9">ABSTRACT</item>
+<item page="11">插图索引</item>
+<item page="13">表格索引</item>
+<item page="15">符号对照表</item>
+<item page="19">缩略语对照表</item>
+<item page="21">目录</item>
+<item page="23">第一章  绪论</item>
+<outline>
+<item page="23">1.1 研究背景及研究意义</item>
+<item page="24">1.2 国内外研究现状</item>
+<outline>
+<item page="24">1.2.1 单地磁车辆事件检测研究现状</item>
+<item page="25">1.2.2 单地磁车型分类研究现状</item>
+<item page="26">1.2.3 单地磁停车与占用检测研究现状</item>
+</outline>
+<item page="28">1.3 研究内容及章节安排</item>
+<outline>
+<item page="28">1.3.1 研究内容</item>
+<item page="28">1.3.2 章节安排</item>
+</outline>
+</outline>
+<item page="31">第二章  地磁车辆事件检测原理与系统设计</item>
+<outline>
+<item page="31">2.1 引言</item>
+<item page="31">2.2 地磁车辆检测基本原理</item>
+<outline>
+<item page="31">2.2.1 车辆检测算法基本原理</item>
+<item page="34">2.2.2 基于一阶差分的状态机车辆检测算法</item>
+</outline>
+<item page="39">2.3 地磁车辆检测系统</item>
+<outline>
+<item page="39">2.3.1 地磁车辆检测模块</item>
+<item page="40">2.3.2 车辆信息检测平台</item>
+</outline>
+<item page="42">2.4 本章小结</item>
+</outline>
+<item page="43">第三章  基于单地磁传感器的车型分类方法</item>
+<outline>
+<item page="43">3.1 引言</item>
+<item page="43">3.2 车型分类任务定义与样本表示</item>
+<outline>
+<item page="43">3.2.1 标签定义与标注口径</item>
+<item page="44">3.2.2 事件级样本与输入表示</item>
+</outline>
+<item page="45">3.3 端侧轻量车型分类方法</item>
+<outline>
+<item page="46">3.3.1 候选统计特征构造与筛选</item>
+<item page="50">3.3.2 轻量分类器设计</item>
+</outline>
+<item page="51">3.4 基于时间规整的离线增强分类方法</item>
+<outline>
+<item page="51">3.4.1 车速变化与线性定长卷积网络基线</item>
+<item page="54">3.4.2 基于动态时间规整的对齐增强方法</item>
+</outline>
+<item page="58">3.5 实验结果与分析</item>
+<outline>
+<item page="58">3.5.1 实验场景、数据集与评价指标</item>
+<item page="60">3.5.2 参数选择与实验设置</item>
+<item page="63">3.5.3 总体结果分析</item>
+<item page="65">3.5.4 消融实验与讨论</item>
+</outline>
+<item page="67">3.6 本章小结</item>
+</outline>
+<item page="69">第四章  基于信号稳定点的道路停车与占用检测方法</item>
+<outline>
+<item page="69">4.1 引言</item>
+<item page="70">4.2 场景定义与信号特性</item>
+<outline>
+<item page="70">4.2.1 场景特性与信号分析</item>
+<item page="71">4.2.2 任务定义与状态口径</item>
+</outline>
+<item page="72">4.3 基于稳定点的停车与占用判定方法</item>
+<outline>
+<item page="72">4.3.1 稳定窗判定与稳定点提取</item>
+<item page="75">4.3.2 动态参考与状态判定机制</item>
+</outline>
+<item page="77">4.4 鲁棒性策略与参数确定</item>
+<outline>
+<item page="77">4.4.1 漂移抑制、伪稳态抑制与连续车流处理</item>
+<item page="79">4.4.2 参数确定与全局配置</item>
+</outline>
+<item page="81">4.5 实验结果与分析</item>
+<outline>
+<item page="81">4.5.1 实验场景、工况分组与评价指标</item>
+<item page="86">4.5.2 对比结果分析</item>
+<item page="88">4.5.3 消融实验与结果讨论</item>
+</outline>
+<item page="90">4.6 本章小结</item>
+</outline>
+<item page="91">第五章  总结与展望</item>
+<item page="93">参考文献</item>
+<item page="97">作者简介</item>
+</outline>
+</pdf2xml>

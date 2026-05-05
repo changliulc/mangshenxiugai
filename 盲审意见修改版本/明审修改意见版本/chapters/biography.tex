@@ -1,0 +1,65 @@
+% !TeX root = ../xdupgthesis_template_lc.tex
+
+\ExplSyntaxOn
+\dim_new:N \l__blind_bio_indent_dim
+\dim_new:N \l__blind_bio_label_dim
+\dim_new:N \l__blind_bio_labelsep_dim
+\dim_set:Nn \l__blind_bio_indent_dim { 18bp }
+\dim_set:Nn \l__blind_bio_label_dim { 1.4em }
+\dim_set:Nn \l__blind_bio_labelsep_dim { 0.55em }
+\cs_new_protected:Npn \__blind_bio_item:nn #1#2
+  {
+    \par
+    \noindent
+    \hangindent=\dim_eval:n
+      { \l__blind_bio_indent_dim + \l__blind_bio_label_dim + \l__blind_bio_labelsep_dim }
+    \hangafter=1
+    \raggedright
+    \skip_horizontal:N \l__blind_bio_indent_dim
+    \makebox[\dim_use:N \l__blind_bio_label_dim][l]{[#1]}
+    \skip_horizontal:N \l__blind_bio_labelsep_dim
+    #2
+    \par
+  }
+\cs_new_protected:Npn \bioresitem #1#2
+  { \__blind_bio_item:nn {#1} {#2} }
+\cs_new_protected:Npn \__blind_bio_edu_item:nn #1#2
+  {
+    \par
+    \noindent
+    \skip_horizontal:N \l__xdu_bio_indent_dim
+    \makebox[9.2em][l]{#1}
+    \parbox[t]{\dim_eval:n { \linewidth - \l__xdu_bio_indent_dim - 9.2em }}{#2}
+    \par
+  }
+\NewDocumentCommand{\bioeduitem}{mm}
+  { \__blind_bio_edu_item:nn {#1} {#2} }
+\ExplSyntaxOff
+
+\section{基本情况}
+
+刘畅，男，河南信阳人，2000年12月出生，西安电子科技大学通信工程学院通信工程（含宽带网络、移动通信等）专业2023级硕士研究生。
+
+\section{教育背景}
+
+\bioeduitem{2018.09～2022.07}{河南工业大学，本科，专业：电子信息工程}
+
+\bioeduitem{2023.09～2026.07}{西安电子科技大学，硕士研究生，专业：电子信息}
+
+\section{攻读硕士学位期间的研究成果}
+
+\ctexset{subsection/indent=18bp}
+
+\subsection{申请（授权）专利}
+\bioresitem{1}{国家发明专利：毛国强，\textbf{刘畅}，侯照莹，毛健强，任效江，李长乐．一种低功耗地磁车辆检测方法及系统：中国，申请号：2026\allowbreak1023\allowbreak90620，申请日期：2026年02月28日。}
+\bioresitem{2}{国家发明专利：毛国强，侯照莹，\textbf{刘畅}，毛健强，任效江，李长乐．面向多次漏检的双车道外侧地磁车辆轨迹连续重构方法及系统：中国，申请号：2026\allowbreak1023\allowbreak90508，申请日期：2026年02月28日。}
+\bioresitem{3}{软件著作权：毛国强，\textbf{刘畅}，侯照莹，毛健强，任效江．单地磁异常停车检测与事件上报软件 V1.0：中国，受理号：2026\allowbreak R11S0463698，申请日期：2026年02月03日。}
+\bioresitem{4}{软件著作权：毛国强，毛健强，\textbf{刘畅}，侯照莹，任效江，李长乐．基于地磁传感器的拥堵车辆检测仿真系统 V1.0：中国，受理号：2026R11\allowbreak S0463768，申请日期：2026年02月03日。}
+\bioresitem{5}{软件著作权：毛国强，肖磊，邱嘉乐，\textbf{刘畅}，毛健强，任效江，李长乐．基于深度学习换道意图识别和轨迹预测系统 V1.0：中国，受理号：2026R11\allowbreak S0463705，申请日期：2026年02月04日。}
+
+\subsection{参与科研项目及获奖}
+\bioresitem{1}{国家自然科学基金重点支持项目，车联网环境的智能汽车多模态高精度融合定位（U21A20446），2022.01～2025.12，已结题，负责地磁组车辆检测算法的开发与研究。}
+\bioresitem{2}{荣获 2023 年度至 2024 年度西安电子科技大学优秀研究生荣誉称号。}
+\bioresitem{3}{荣获 2023 年度至 2024 年度西安电子科技大学二等奖学金。}
+\bioresitem{4}{荣获 2024 年度至 2025 年度西安电子科技大学二等奖学金。}
+\bioresitem{5}{荣获 2025 年度至 2026 年度西安电子科技大学三等奖学金。}

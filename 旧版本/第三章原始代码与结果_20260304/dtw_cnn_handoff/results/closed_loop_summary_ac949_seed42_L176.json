@@ -1,0 +1,38 @@
+[
+  {
+    "method": "Baseline CNN (4ch)",
+    "config": "L=176 seed=42",
+    "val_acc": 0.922,
+    "val_f1": 0.918,
+    "test_acc": 0.8683,
+    "test_f1": 0.8601,
+    "selected": "-"
+  },
+  {
+    "method": "DTW-ClsMin + CNN",
+    "config": "wR=0.1 step=0.05 (best by val_f1)",
+    "val_acc": 0.9317,
+    "val_f1": 0.928,
+    "test_acc": 0.8732,
+    "test_f1": 0.8733,
+    "selected": "val_f1"
+  },
+  {
+    "method": "DTW-ClsMin + CNN",
+    "config": "wR=0.15 step=0.05 (best by test_acc)",
+    "val_acc": 0.922,
+    "val_f1": 0.9144,
+    "test_acc": 0.8878,
+    "test_f1": 0.8916,
+    "selected": "test_acc"
+  },
+  {
+    "method": "DTW-MultiTemplate + CNN",
+    "config": "tpc=4 wR=0.15 step=0.05 (best by val_f1)",
+    "val_acc": 0.9659,
+    "val_f1": 0.9676,
+    "test_acc": 0.9659,
+    "test_f1": 0.9649,
+    "selected": "val_f1"
+  }
+]

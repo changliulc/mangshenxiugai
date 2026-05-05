@@ -1,0 +1,22 @@
+\vspace {10pt}
+\addvspace {10.0pt}
+\addvspace {10.0pt}
+\contentsline {table}{\numberline {2.1}{\ignorespaces 车辆检测关键参数设置}}{17}{table.caption.21}%
+\addvspace {10.0pt}
+\contentsline {table}{\numberline {3.1}{\ignorespaces 三分类车辆类别定义与标注口径}}{22}{table.caption.25}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces 端侧候选统计特征类别及代表性统计量}}{25}{table.caption.27}%
+\contentsline {table}{\numberline {3.3}{\ignorespaces 实测车辆事件数据集事件长度统计}}{37}{table.caption.33}%
+\contentsline {table}{\numberline {3.4}{\ignorespaces 实测车辆事件数据集分层随机划分结果}}{37}{table.caption.34}%
+\contentsline {table}{\numberline {3.5}{\ignorespaces 端侧轻量分类器超参数搜索范围}}{40}{table.caption.38}%
+\contentsline {table}{\numberline {3.6}{\ignorespaces 端侧正式部署特征集}}{40}{table.caption.39}%
+\contentsline {table}{\numberline {3.7}{\ignorespaces 不同车型分类方案总体性能对比}}{42}{table.caption.42}%
+\contentsline {table}{\numberline {3.8}{\ignorespaces 线性定长卷积网络基线各类别指标}}{43}{table.caption.44}%
+\contentsline {table}{\numberline {3.9}{\ignorespaces DTW多模板增强方法各类别指标}}{43}{table.caption.45}%
+\contentsline {table}{\numberline {3.10}{\ignorespaces 单模板策略消融结果}}{43}{table.caption.46}%
+\contentsline {table}{\numberline {3.11}{\ignorespaces 容量控制对照结果}}{44}{table.caption.47}%
+\addvspace {10.0pt}
+\contentsline {table}{\numberline {4.1}{\ignorespaces 停车与占用检测全局参数配置}}{59}{table.caption.54}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces 数据集与工况分组统计}}{62}{table.caption.60}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces 不同方法在各工况上的占用状态段判定结果}}{64}{table.caption.61}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces 消融实验结果}}{66}{table.caption.64}%
+\addvspace {10.0pt}

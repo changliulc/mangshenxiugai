@@ -1,0 +1,4 @@
+﻿experiment,validation_type,preset,oversample,run_id,seed,model,param_count,best_epoch,val_acc,val_macro_f1,test_acc,test_macro_f1
+source_group_validation,source_group,paper_fair,0,0,42,fixed_cnn_1d,36323,128,0.926829268292683,0.9247041578093347,0.8975609756097561,0.8921011641016481
+source_group_validation,source_group,paper_fair,0,0,42,lstm_h64,51395,81,0.8634146341463415,0.856308583748449,0.8146341463414634,0.8061895228561896
+source_group_validation,source_group,paper_fair,0,0,42,lstm_h32,13411,99,0.8390243902439024,0.8403323100661181,0.7853658536585366,0.7762615493958777

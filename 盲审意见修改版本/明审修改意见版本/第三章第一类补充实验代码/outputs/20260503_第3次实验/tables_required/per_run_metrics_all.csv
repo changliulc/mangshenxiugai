@@ -1,0 +1,7 @@
+﻿experiment,validation_type,preset,oversample,run_id,seed,model,param_count,best_epoch,val_acc,val_macro_f1,test_acc,test_macro_f1,result_dir
+baselines_lstm,stratified_random,paper_fair,0,0,42,fixed_cnn_1d,36323,134,0.9317073170731708,0.9316895893279833,0.9073170731707317,0.8997428508851787,outputs\20260503_第3次实验\baselines_paper_fair
+baselines_lstm,stratified_random,paper_fair,0,0,42,lstm_h64,51395,106,0.8585365853658536,0.8534429930656345,0.8048780487804879,0.7940536463335883,outputs\20260503_第3次实验\baselines_paper_fair
+baselines_lstm,stratified_random,paper_fair,0,0,42,lstm_h32,13411,105,0.8390243902439024,0.8243316465571527,0.8,0.7792189795183061,outputs\20260503_第3次实验\baselines_paper_fair
+source_group_validation,source_group,paper_fair,0,0,42,fixed_cnn_1d,36323,67,0.9073170731707317,0.9052796317247603,0.8682926829268293,0.8635746606334842,outputs\20260503_第3次实验\source_group_paper_fair
+source_group_validation,source_group,paper_fair,0,0,42,lstm_h64,51395,143,0.8536585365853658,0.8546579770936851,0.8097560975609757,0.7896744904858496,outputs\20260503_第3次实验\source_group_paper_fair
+source_group_validation,source_group,paper_fair,0,0,42,lstm_h32,13411,193,0.8682926829268293,0.8688164045011662,0.8097560975609757,0.7998976383709878,outputs\20260503_第3次实验\source_group_paper_fair

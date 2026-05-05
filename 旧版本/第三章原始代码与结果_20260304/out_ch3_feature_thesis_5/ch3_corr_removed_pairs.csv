@@ -1,0 +1,14 @@
+﻿removed_feature,kept_feature,rho
+b_energy,x_energy,0.9866033487679654
+y_absarea,x_absarea,0.9102394480804211
+y_std,x_ptp,0.9578439973407977
+b_mean,x_absarea,0.9174235196051131
+x_std,x_absarea,0.9170331948588807
+b_max,x_ptp,0.9768251408567915
+b_rms,x_absarea,0.9038503274073825
+b_ptp,x_ptp,0.9758164873681864
+y_ptp,x_ptp,0.9722293043285446
+y_energy,x_energy,0.9308865859682999
+b_std,x_ptp,0.967522873897822
+z_std,z_absarea,0.9368486752058649
+z_ptp,z_absarea,0.9104652198336055
