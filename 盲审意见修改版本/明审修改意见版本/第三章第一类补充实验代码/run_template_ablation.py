@@ -111,6 +111,43 @@ def build_dtw_template_pool(
     return X_out
 
 
+def build_linear_template_residual_pool(
+    X_raw: np.ndarray,
+    templates: np.ndarray,
+) -> np.ndarray:
+    """Build a multi-template control representation without DTW alignment.
+
+    It uses the same template pool and channel count as DTW multi-template, but
+    each block is the point-wise residual between the fixed-length sample and a
+    fixed-length template. This keeps the multi-template view while removing the
+    nonlinear DTW warping step.
+    """
+
+    X_raw = np.asarray(X_raw, dtype=np.float32)
+    templates = np.asarray(templates, dtype=np.float32)
+    if templates.ndim == 4:
+        n_templates = int(templates.shape[0] * templates.shape[1])
+        templates_flat = templates.reshape(n_templates, templates.shape[2], templates.shape[3])
+    elif templates.ndim == 3:
+        templates_flat = templates
+        n_templates = int(templates.shape[0])
+    else:
+        raise ValueError(f"Expected templates with ndim 3 or 4, got shape {templates.shape}")
+
+    N, ch, length = X_raw.shape
+    if templates_flat.shape[1:] != (ch, length):
+        raise ValueError(
+            f"Template shape {templates_flat.shape[1:]} does not match sample shape {(ch, length)}"
+        )
+
+    X_out = np.zeros((N, ch * n_templates, length), dtype=np.float32)
+    col = 0
+    for template in templates_flat:
+        X_out[:, col : col + ch, :] = X_raw - template[None, :, :]
+        col += ch
+    return X_out
+
+
 def train_representation(
     method_name: str,
     X_rep_raw: np.ndarray,
@@ -249,6 +286,10 @@ def main() -> None:
             step=args.step,
         )
         representations.append((f"dtw_multi_quantile_K{K}", X_multi, time.time() - started))
+
+        started = time.time()
+        X_linear_multi = build_linear_template_residual_pool(X_raw.copy(), _templates)
+        representations.append((f"linear_multi_residual_K{K}", X_linear_multi, time.time() - started))
 
     total_random_templates = 3 * int(args.random_K)
     started = time.time()
